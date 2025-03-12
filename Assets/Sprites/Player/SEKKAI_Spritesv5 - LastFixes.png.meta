@@ -1,0 +1,460 @@
+fileFormatVersion: 2
+guid: 30a42fc8f56e60f49a126147423dc0be
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 479
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76830e035b3c8c04cb611757894571bf
+      internalID: -1542412774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_1
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 479
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b790b3559b485a469f06d2c93253611
+      internalID: 1315169379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_2
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 479
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b01d748c2466db44db8edd1540c23186
+      internalID: 584613824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_3
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 479
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 289765da88ff4ab4895b590fe1592329
+      internalID: 1591577812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_4
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 479
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf9c5f86762d2464aacd43317e34d44a
+      internalID: 1188375462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 454
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 109dd812b90c9c84898aed64630fcd66
+      internalID: 966588408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_6
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 454
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60544d9f40819674bb5b3f2608a81938
+      internalID: -1845585371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_7
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 454
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6dd9fd7204e2c4294802788524b9b1
+      internalID: 1968070870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_8
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 454
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce237414136cee743a409dbacdb21547
+      internalID: -1714638050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_9
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 454
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d97330e8889829d40b11bd7c5c156d4e
+      internalID: -2029330196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_12
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 436
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3916a82a4afa3984a9bebd76013ea22a
+      internalID: -1071014183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_13
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 440
+        width: 17
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f9842b0eccb21442ba5fb04c6e28617
+      internalID: -1451457860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_15
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 431
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f61feab872e8654f852769c25aaafcc
+      internalID: -342110492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_17
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 422
+        width: 43
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5ce4eb8a5724244a6a8bf86d3ab749
+      internalID: -1999830820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_Spritesv5 - LastFixes_10
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 443
+        width: 1
+        height: 1
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98e9723e0f4e6d146be24e79bfaf5576
+      internalID: -2011958397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SEKKAI_Spritesv5 - LastFixes_0: -1542412774
+      SEKKAI_Spritesv5 - LastFixes_1: 1315169379
+      SEKKAI_Spritesv5 - LastFixes_10: -2011958397
+      SEKKAI_Spritesv5 - LastFixes_11: -2059657156
+      SEKKAI_Spritesv5 - LastFixes_12: -1071014183
+      SEKKAI_Spritesv5 - LastFixes_13: -1451457860
+      SEKKAI_Spritesv5 - LastFixes_14: -1891125615
+      SEKKAI_Spritesv5 - LastFixes_15: -342110492
+      SEKKAI_Spritesv5 - LastFixes_16: -110384024
+      SEKKAI_Spritesv5 - LastFixes_17: -1999830820
+      SEKKAI_Spritesv5 - LastFixes_2: 584613824
+      SEKKAI_Spritesv5 - LastFixes_3: 1591577812
+      SEKKAI_Spritesv5 - LastFixes_4: 1188375462
+      SEKKAI_Spritesv5 - LastFixes_5: 966588408
+      SEKKAI_Spritesv5 - LastFixes_6: -1845585371
+      SEKKAI_Spritesv5 - LastFixes_7: 1968070870
+      SEKKAI_Spritesv5 - LastFixes_8: -1714638050
+      SEKKAI_Spritesv5 - LastFixes_9: -2029330196
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
