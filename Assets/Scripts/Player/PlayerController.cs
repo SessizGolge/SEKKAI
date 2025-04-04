@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,18 +37,13 @@ public class CursedEnergySettings
 }
 
 [System.Serializable]
-public class HealthSettings
-{
-    public float health = 100f;
-    public float maxHealth = 100f;
-}
-
-[System.Serializable]
 public class WeaponObjects
 {
     public GameObject sword;
     public GameObject ninjaStar;
+    [SerializeField] public int starDamage = 25;
     public GameObject crosshair;
+    public GameObject shadow;
 }
 
 [System.Serializable]
@@ -61,6 +57,14 @@ public class UIElements
     public Image healthValue;
     public Image cursedEnergyBar;
     public Image cursedEnergyValue;
+    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber;
+}
+
+[System.Serializable]
+public class SFX 
+{
+    public AudioSource audioSource;
+    public AudioClip hitSFX, dashSFX;
 }
 
 public class PlayerController : MonoBehaviour
@@ -69,30 +73,36 @@ public class PlayerController : MonoBehaviour
     [Header("Player Settings")]
     public MovementSettings movement;
     public StaminaSettings staminaSettings;
-    public HealthSettings healthSettings;
     public CursedEnergySettings cursedEnergySettings;
     public WeaponObjects weapons;
     public UIElements uiElements;
+    public SFX sfx;
 
     // --------------------------
     [Header("Player States")]
-    private Rigidbody2D rb;
-    private Animator anim;
+    [SerializeField] Rigidbody2D rb;
+    [SerializeField] GameObject playerVFX;
+    [SerializeField] Animator anim;
+    [SerializeField] Health healthComponent;
     private Vector2 direction;
-    public bool isDead = false;
     public bool isStarHolding = false;
     public bool isSwordHolding = false;
     public bool isCursed = false;
-
     private bool facingRight = true;
     private bool isDashing = false;
     private bool isSprinting = false;
+    public string dieAnim = "AkaiDied";
+    public string cursedDieAnim = "AkaiCursedDied";
+    private Coroutine healthBarCoroutine, staminaBarCoroutine, cursedEnergyCoroutine;
     
-
+    
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();   
-        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        healthComponent = GetComponent<Health>();
+        
+
+        weapons.shadow.GetComponent<SpriteRenderer>().enabled = true;
 
         weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
         weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
@@ -104,10 +114,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (healthSettings.health <= 0) 
-        {
-            isDead = true;
-        }
+        bool isDead = healthComponent.IsDead;
 
         if (!isDead) 
         {
@@ -130,8 +137,41 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(GameObject source, int damage)
+    {
+        healthComponent.GetHit(damage, source, gameObject);
+        
+        // Ölüm gerçekleştiğinde animasyon tetiklenebilir
+        if (healthComponent.IsDead)
+        {
+            // Ölüm animasyonu
+            anim.SetTrigger("Die");
+        }
+    }
+
+
+    public void HandItemSwitch() 
+    {
+        if (isSwordHolding && !isStarHolding) 
+        {
+            weapons.sword.GetComponent<SpriteRenderer>().enabled = true;
+            isSwordHolding = true;
+            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
+            isStarHolding = false;
+        }
+        if (isStarHolding && !isSwordHolding) 
+        {
+            weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
+            isSwordHolding = false;
+            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = true;
+            isStarHolding = true;
+        }
+    }
+
     void FixedUpdate()
     {
+        bool isDead = healthComponent.IsDead;
+
         if (!isDead && !isDashing) 
         {
             Vector2 newPosition = rb.position + direction * movement.speed * Time.fixedDeltaTime;
@@ -157,17 +197,15 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
-            weapons.sword.GetComponent<SpriteRenderer>().enabled = true;
             isSwordHolding = true;
-            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
             isStarHolding = false;
+            HandItemSwitch();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2)) 
         {
-            weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
             isSwordHolding = false;
-            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = true;
             isStarHolding = true;
+            HandItemSwitch();
         }
     }
 
@@ -217,23 +255,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void UpdateAnimations(float moveX, float moveY)
+    public void UpdateAnimations(float moveX, float moveY)
     {
+        bool isDead = healthComponent.IsDead;
         bool isWalking = moveX != 0 || moveY != 0;
+
+        if (isDead) 
+        {
+            anim.SetBool("AkaiWalk", false);
+            anim.SetBool("AkaiStand", false);
+        }
 
         if (facingRight && !isDashing)
         {
-            anim.SetBool("AkaiRight", !isWalking);
-            anim.SetBool("AkaiRightWalk", isWalking);
-            anim.SetBool("AkaiLeft", false);
-            anim.SetBool("AkaiLeftWalk", false);
+            playerVFX.transform.rotation = Quaternion.Euler(0, 0, 0);
+            anim.SetBool("AkaiWalk", isWalking);
+            anim.SetBool("AkaiStand", !isWalking);
         }
-        else
+        else if (!facingRight)
         {
-            anim.SetBool("AkaiLeft", !isWalking);
-            anim.SetBool("AkaiLeftWalk", isWalking);
-            anim.SetBool("AkaiRight", false);
-            anim.SetBool("AkaiRightWalk", false);
+            playerVFX.transform.rotation = Quaternion.Euler(0, -180, 0);
+            anim.SetBool("AkaiStand", !isWalking);
+            anim.SetBool("AkaiWalk", isWalking);
         }
     }
 
@@ -242,12 +285,13 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         staminaSettings.stamina -= staminaSettings.dashCost;
         staminaSettings.stamina = Mathf.Clamp(staminaSettings.stamina, 0f, staminaSettings.maxStamina);
+        sfx.audioSource.PlayOneShot(sfx.dashSFX);
         UpdateStaminaBar();
 
         Vector2 dashDirection = direction == Vector2.zero ? (facingRight ? Vector2.right : Vector2.left) : direction;
         rb.velocity = dashDirection * movement.dashSpeed;
 
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = playerVFX.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = facingRight ? uiElements.dashRight : uiElements.dashLeft;
 
         yield return new WaitForSeconds(0.2f);
@@ -255,27 +299,130 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
-    void UpdateStaminaBar()
+    public IEnumerator HandleDeath()
     {
-        if (uiElements.staminaValue != null)
+        anim.speed = 0.5f;
+
+        if (!isCursed)
         {
-            uiElements.staminaValue.fillAmount = staminaSettings.stamina / staminaSettings.maxStamina;
+            anim.SetTrigger("AkaiDied");
         }
+        else
+        {
+            anim.SetTrigger("AkaiCursedDied");
+        }
+
+        yield return new WaitForSeconds(0.7f); // Ölme animasyonunun süresine göre ayarla
+        Destroy(gameObject);
+    }
+
+    IEnumerator SmoothHealthBar(float targetFill, float duration = 0.2f)
+    {
+        float startFill = uiElements.healthValue.fillAmount;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            uiElements.healthValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
+            yield return null;
+        }
+
+        uiElements.healthValue.fillAmount = targetFill; // Son değeri sabitle
     }
 
     void UpdateHealthBar()
     {
         if (uiElements.healthValue != null)
         {
-            uiElements.healthValue.fillAmount = healthSettings.health / healthSettings.maxHealth;
+            float targetFill = (float)healthComponent.currentHealth / (float)healthComponent.maxHealth;
+
+            if (healthBarCoroutine != null)
+            {
+                StopCoroutine(healthBarCoroutine);
+            }
+
+            healthBarCoroutine = StartCoroutine(SmoothHealthBar(targetFill));
+        }
+
+        if (uiElements.healthNumber != null)
+        {
+            uiElements.healthNumber.text = healthComponent.currentHealth.ToString();
         }
     }
-    
-    void UpdateCursedEnergyBar() 
+
+
+    IEnumerator SmoothStaminaBar(float targetFill, float duration = 0.2f)
+    {
+        float startFill = uiElements.staminaValue.fillAmount;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            uiElements.staminaValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
+            yield return null;
+        }
+
+        uiElements.staminaValue.fillAmount = targetFill; // Son değeri sabitle
+    }
+
+
+    void UpdateStaminaBar()
+    {
+        if (uiElements.staminaValue != null)
+        {
+            float targetFill = staminaSettings.stamina / staminaSettings.maxStamina;
+
+            if (staminaBarCoroutine != null)
+            {
+                StopCoroutine(staminaBarCoroutine);
+            }
+
+            staminaBarCoroutine = StartCoroutine(SmoothStaminaBar(targetFill));
+        }
+
+        if (uiElements.staminaNumber != null)
+        {
+            uiElements.staminaNumber.text = Mathf.RoundToInt(staminaSettings.stamina).ToString();
+        }
+    }
+
+    IEnumerator SmoothCursedEnergyBar(float targetFill, float duration = 0.2f)
+    {
+        float startFill = uiElements.cursedEnergyValue.fillAmount;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            uiElements.cursedEnergyValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
+            yield return null;
+        }
+
+        uiElements.cursedEnergyValue.fillAmount = targetFill;
+    }
+
+    void UpdateCursedEnergyBar()
     {
         if (uiElements.cursedEnergyValue != null)
         {
-            uiElements.cursedEnergyValue.fillAmount = cursedEnergySettings.cursedEnergy / cursedEnergySettings.maxCursedEnergy;
+            float targetFill = cursedEnergySettings.cursedEnergy / cursedEnergySettings.maxCursedEnergy;
+
+            if (cursedEnergyCoroutine != null)
+            {
+                StopCoroutine(cursedEnergyCoroutine);
+            }
+
+            cursedEnergyCoroutine = StartCoroutine(SmoothCursedEnergyBar(targetFill));
         }
-    } 
+
+        if (uiElements.cursedEnergyNumber != null)
+        {
+            uiElements.cursedEnergyNumber.text = cursedEnergySettings.cursedEnergy.ToString();
+        }
+    }
 }

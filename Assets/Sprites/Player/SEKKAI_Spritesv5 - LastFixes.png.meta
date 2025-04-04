@@ -386,12 +386,12 @@ TextureImporter:
       name: SEKKAI_Spritesv5 - LastFixes_17
       rect:
         serializedVersion: 2
-        x: 4
+        x: 23
         y: 422
-        width: 43
+        width: 24
         height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.120173454, y: 0.50000435}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

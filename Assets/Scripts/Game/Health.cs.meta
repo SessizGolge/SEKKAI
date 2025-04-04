@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3ecbb6b870c81d4408b2360be3c56ad7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - dieSFX: {fileID: 8300000, guid: e570c22e5d4dfca40af9536d8c762eac, type: 3}
+  - hitSFX: {fileID: 8300000, guid: 9e0708e22dfc08d4da4e32a09b209a5f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

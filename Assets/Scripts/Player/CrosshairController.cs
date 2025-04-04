@@ -8,17 +8,14 @@ public class CrosshairController : MonoBehaviour
     private bool facingRight = true;
     void Start()
     {
-        // Mouse imlecini gizle
         Cursor.visible = false;
     }
 
     void Update()
     {
-        // Mouse pozisyonunu al ve dünya koordinatlarına çevir
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0; // 2D olduğu için Z eksenini sıfırla
+        mousePos.z = 0;
 
-        // Crosshair'ı mouse pozisyonuna taşı
         transform.position = mousePos;
 
         if (player == null) return;
