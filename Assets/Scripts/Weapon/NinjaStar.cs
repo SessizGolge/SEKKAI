@@ -8,14 +8,10 @@ public class NinjaStar : MonoBehaviour
     public int starDamageValue;
     public Transform circleOrigin;
     public float radius;
-    [SerializeField] public AudioSource audioSource;
-    [SerializeField] public AudioClip ninjaStarSFX;
-
     private Rigidbody2D rb;
     
     void Start()
     {
-        audioSource.PlayOneShot(ninjaStarSFX);
         // Rigidbody2D bileşenini al
         rb = GetComponent<Rigidbody2D>();
         starDamageValue = playerController.weapons.starDamage;
@@ -42,14 +38,13 @@ public class NinjaStar : MonoBehaviour
         {
             if (enemy.CompareTag("Enemy"))
             {
-
                 // Düşman sağlığına saldır
                 Health health;
                 if (health = enemy.GetComponent<Health>())
                 {
                     health.GetHit(starDamageValue, playerController.gameObject, enemy.gameObject);
-                    Destroy(gameObject); // Yıldızın kendisini yok et
                 }
+                Destroy(gameObject);
             }
         }
     }

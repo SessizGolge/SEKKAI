@@ -43,7 +43,6 @@ public class WeaponObjects
     public GameObject ninjaStar;
     [SerializeField] public int starDamage = 25;
     public GameObject crosshair;
-    public GameObject shadow;
 }
 
 [System.Serializable]
@@ -82,6 +81,8 @@ public class PlayerController : MonoBehaviour
     [Header("Player States")]
     [SerializeField] Rigidbody2D rb;
     [SerializeField] GameObject playerVFX;
+    
+    [SerializeField] ObjectController objectController;
     [SerializeField] Animator anim;
     [SerializeField] Health healthComponent;
     private Vector2 direction;
@@ -94,6 +95,12 @@ public class PlayerController : MonoBehaviour
     public string dieAnim = "AkaiDied";
     public string cursedDieAnim = "AkaiCursedDied";
     private Coroutine healthBarCoroutine, staminaBarCoroutine, cursedEnergyCoroutine;
+    [SerializeField] private float slowDuration = 0.5f;
+    [SerializeField] private float slowMultiplier = 0.5f;
+
+    private bool isSlowed = false;
+    private float originalSpeed;
+
     
     
     void Start()
@@ -101,9 +108,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         healthComponent = GetComponent<Health>();
         
-
-        weapons.shadow.GetComponent<SpriteRenderer>().enabled = true;
-
         weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
         weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
         weapons.crosshair.SetActive(true);
@@ -116,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead) 
+        if (!isDead && !objectController.isOpened) 
         {
             if (isCursed) 
             {
@@ -140,13 +144,31 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(GameObject source, int damage)
     {
         healthComponent.GetHit(damage, source, gameObject);
-        
+        sfx.audioSource.PlayOneShot(sfx.hitSFX);
+
+        if (!isSlowed)
+        {
+            StartCoroutine(SlowDown());
+        }
+
         // Ölüm gerçekleştiğinde animasyon tetiklenebilir
         if (healthComponent.IsDead)
         {
-            // Ölüm animasyonu
             anim.SetTrigger("Die");
         }
+    }
+
+    private IEnumerator SlowDown()
+    {
+        isSlowed = true;
+
+        originalSpeed = movement.speed; // veya hangi değişkenle karakteri hareket ettiriyorsan
+        movement.speed *= slowMultiplier;
+
+        yield return new WaitForSeconds(slowDuration);
+
+        movement.speed = originalSpeed;
+        isSlowed = false;
     }
 
 

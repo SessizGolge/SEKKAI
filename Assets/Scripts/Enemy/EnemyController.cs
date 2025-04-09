@@ -26,8 +26,7 @@ public class EnemyController : MonoBehaviour
     private bool facingRight = true;
     private Transform closestPlayer;
     [SerializeField] PlayerController player;
-    [SerializeField] GameObject shadow;
-    [SerializeField] bool isPatrolling = false; // Yeni bir flag ekledik
+    [SerializeField] public bool isPatrolling = false; // Yeni bir flag ekledik
     [SerializeField] public AudioSource audioSource;
     [SerializeField] public AudioClip knife;
     public Image enemyHealthValue;
@@ -198,7 +197,6 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator HandleDeath()
     {
-        shadow.SetActive(false);
         anim.speed = 0.5f;
         anim.SetTrigger("KagenariDied");
         yield return new WaitForSeconds(0.7f); // Ölme animasyonu süresi
@@ -207,44 +205,62 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator Attack()
     {
+        float originalSpeed = speed;
         bool isDead = healthComponent.IsDead;
 
         if (isDead) yield break; // Eğer ölü ise saldırıyı iptal et
 
-        isAttacking = true;
-        anim.SetTrigger("KagenariAttack");
-        yield return new WaitForSeconds(0.5f);
-
-        if (closestPlayer != null && !closestPlayer.GetComponent<Health>().IsDead)
-        {
-            Health playerHealth = closestPlayer.GetComponent<Health>();
-            playerHealth.GetHit(damage, gameObject, closestPlayer.gameObject); // Oyuncuya hasar ver
-            audioSource.PlayOneShot(knife);
-        }
-
-        yield return new WaitForSeconds(attackCooldown - 0.5f);
-        
-        isAttacking = false;
-        anim.ResetTrigger("KagenariAttack");
-
-        // Eğer saldırılan oyuncu öldüyse patrol başlat
-        if (closestPlayer == null || closestPlayer.GetComponent<Health>().IsDead)
+        // Oyuncu saldırı menzilinde mi kontrol et
+        if (closestPlayer != null && Vector2.Distance(transform.position, closestPlayer.position) > attackRange)
         {
             anim.ResetTrigger("KagenariAttack");
             UpdateAnimations(0, 0);
-            StartCoroutine(Patrol());
+            MoveTowardsPlayer();
+            yield break;
         }
-        else
+
+        isAttacking = true;
+        anim.SetTrigger("KagenariAttack");
+        yield return new WaitForSeconds(0.5f);
+        audioSource.PlayOneShot(knife);
+
+        // Eğer oyuncu hala menzil içindeyse, hasar ver
+        if (closestPlayer != null && Vector2.Distance(transform.position, closestPlayer.position) <= attackRange && !closestPlayer.GetComponent<Health>().IsDead)
         {
-            // Eğer oyuncu hala hayatta ama detection range dışına çıktıysa patrol'e dön
-            float distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.position);
-            if (distanceToPlayer > detectionRange + 1f) // Algılama mesafesinden biraz daha fazla mesafeye çıkarsa
-            {
-                anim.ResetTrigger("KagenariAttack");
-                UpdateAnimations(0, 0);
-                StartCoroutine(Patrol());
-            }
+            speed = speed * 0.3f; // %30 hızda hareket etsin (çok yavaşlasın)
+            Health playerHealth = closestPlayer.GetComponent<Health>();
+            playerHealth.GetHit(damage, gameObject, closestPlayer.gameObject); // Oyuncuya hasar ver
         }
+
+        float elapsedTime = 0f;
+        float slowDuration = attackCooldown - 0.5f; // Yavaş kalacağı süre
+
+        // **Saldırı Sonrası Yavaşken Oyuncuya Gitmeye Devam Et**
+        while (elapsedTime < slowDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Eğer oyuncu detectionRange içindeyse ona doğru gitmeye devam et
+            if (closestPlayer != null && Vector2.Distance(transform.position, closestPlayer.position) <= detectionRange)
+            {
+                MoveTowardsPlayer();
+            }
+            else
+            {
+                // Eğer oyuncu detectionRange dışına çıkarsa patrol başlat
+                StartCoroutine(Patrol());
+                speed = originalSpeed; // Patrol başlarken hız normale dönsün
+                isAttacking = false;
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        // Hızı geri eski haline getir
+        speed = originalSpeed;
+        isAttacking = false;
+        anim.ResetTrigger("KagenariAttack");
     }
 
     void OnTriggerEnter2D(Collider2D collision)

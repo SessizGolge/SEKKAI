@@ -5,6 +5,9 @@ using TMPro;
 public class NinjaStarController : MonoBehaviour
 {
     [SerializeField] private PlayerController player;
+    [SerializeField] ObjectController objectController;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip ninjaStarSFX;
     [SerializeField] private Health healthComponent;
     [SerializeField] private Transform crosshair;
     [SerializeField] private GameObject ninjaStarPrefab;
@@ -32,7 +35,7 @@ public class NinjaStarController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead)
+        if (!isDead && !objectController.isOpened)
         {
             starCountText.text = starCount.ToString();
             isStarHolding = player.isStarHolding;
@@ -77,6 +80,7 @@ public class NinjaStarController : MonoBehaviour
         // Yıldızı görünmez yap
         spriteRenderer.enabled = false;
 
+        audioSource.PlayOneShot(ninjaStarSFX);
         GameObject newStar = Instantiate(ninjaStarPrefab, starSpawnPoint.position, Quaternion.identity);
         newStar.GetComponent<Rigidbody2D>().velocity = (crosshair.position - starSpawnPoint.position).normalized * throwSpeed;
         newStar.transform.rotation = Quaternion.LookRotation(Vector3.forward, crosshair.position - starSpawnPoint.position);

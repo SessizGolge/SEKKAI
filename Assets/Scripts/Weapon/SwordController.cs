@@ -4,6 +4,7 @@ using UnityEngine;
 public class SwordController : MonoBehaviour
 {
     [SerializeField] private PlayerController player;
+    [SerializeField] ObjectController objectController;
     [SerializeField] private Transform crosshair;
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -28,7 +29,7 @@ public class SwordController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead) 
+        if (!isDead && !objectController.isOpened)
         {
             if (isAttacking) return;
             if (player == null || crosshair == null) return;
