@@ -108,7 +108,7 @@ public class Health : MonoBehaviour
     {
         if (uiElements.healthValue != null)
         {
-            uiElements.healthValue.fillAmount = (float)currentHealth / (float)maxHealth;
+            uiElements.healthValue.fillAmount = currentHealth / maxHealth;
         }
     }
 }

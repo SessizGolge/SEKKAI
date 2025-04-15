@@ -197,6 +197,10 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator HandleDeath()
     {
+        if (healthComponent.currentHealth < 100) 
+        {
+            healthComponent.currentHealth += 10;
+        }
         anim.speed = 0.5f;
         anim.SetTrigger("KagenariDied");
         yield return new WaitForSeconds(0.7f); // Ölme animasyonu süresi

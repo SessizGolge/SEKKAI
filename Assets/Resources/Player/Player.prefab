@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 228043535557441357}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: -5.66, y: -5.6, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39,7 +39,6 @@ Transform:
   - {fileID: 437336704184077237}
   - {fileID: 4047367157573618654}
   - {fileID: 513063412393451356}
-  - {fileID: 4462789576749087423}
   - {fileID: 3638905658555176841}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,14 +49,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228043535557441357}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 835f9249ffe16c14192308c55a774aa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRange: 2
   interactKey: 101
-  crosshair: {fileID: 5742861767050635948}
+  objectController: {fileID: 0}
+  crosshair: {fileID: 0}
   interactionLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -79,8 +79,6 @@ MonoBehaviour:
     speed: 5
     runSpeed: 7.5
     dashSpeed: 15
-    maxX: 6.5
-    maxY: 5
   staminaSettings:
     stamina: 5
     maxStamina: 5
@@ -95,7 +93,7 @@ MonoBehaviour:
     sword: {fileID: 3366434741120980832}
     ninjaStar: {fileID: 7773747061198851893}
     starDamage: 25
-    crosshair: {fileID: 5742861767050635948}
+    crosshair: {fileID: 0}
   uiElements:
     dashLeft: {fileID: 1188375462, guid: 30a42fc8f56e60f49a126147423dc0be, type: 3}
     dashRight: {fileID: -2029330196, guid: 30a42fc8f56e60f49a126147423dc0be, type: 3}
@@ -352,7 +350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7003296026397565973}
-  crosshair: {fileID: 4462789576749087423}
+  crosshair: {fileID: 0}
   anim: {fileID: 3625281248937772773}
   spriteRenderer: {fileID: 7196514996138165390}
   healthComponent: {fileID: 6078154890514844690}
@@ -1543,7 +1541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4291575295036222332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1737,127 +1735,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &5742861767050635948
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4462789576749087423}
-  - component: {fileID: 9217698823443935653}
-  - component: {fileID: 6077691442536833052}
-  - component: {fileID: 6907938881164008407}
-  m_Layer: 6
-  m_Name: Crosshair
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &4462789576749087423
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5742861767050635948}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2521375610130648979}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &9217698823443935653
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5742861767050635948}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 10000
-  m_Sprite: {fileID: -342110492, guid: 30a42fc8f56e60f49a126147423dc0be, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.14, y: 0.14}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!114 &6077691442536833052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5742861767050635948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0b022482adf0eb4999a0000d610648d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 7003296026397565973}
-  objectController: {fileID: 0}
---- !u!95 &6907938881164008407
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5742861767050635948}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d235dd1eac77d6848afa3fd0a7e7fea1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7043016289566953341
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,7 +2001,7 @@ MonoBehaviour:
   audioSource: {fileID: 9129782403183576645}
   ninjaStarSFX: {fileID: 8300000, guid: be35510a600375640aea2659ad944232, type: 3}
   healthComponent: {fileID: 6078154890514844690}
-  crosshair: {fileID: 4462789576749087423}
+  crosshair: {fileID: 0}
   ninjaStarPrefab: {fileID: 2860831496528285526, guid: ca3a6d6c0e731ff46bcfe1a11a338d62, type: 3}
   starCountText: {fileID: 7571700566346459173}
   starSpawnPoint: {fileID: 437336704184077237}

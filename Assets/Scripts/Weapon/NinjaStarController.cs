@@ -5,7 +5,7 @@ using TMPro;
 public class NinjaStarController : MonoBehaviour
 {
     [SerializeField] private PlayerController player;
-    [SerializeField] ObjectController objectController;
+    // [SerializeField] ObjectController objectController;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip ninjaStarSFX;
     [SerializeField] private Health healthComponent;
@@ -22,6 +22,8 @@ public class NinjaStarController : MonoBehaviour
     private int starCount;
     private bool isStarHolding = true;
     private bool facingRight = true;
+    private bool canThrow = true;
+
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -35,7 +37,7 @@ public class NinjaStarController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead && !objectController.isOpened)
+        if (!isDead) // && !objectController.isOpened
         {
             starCountText.text = starCount.ToString();
             isStarHolding = player.isStarHolding;
@@ -59,9 +61,9 @@ public class NinjaStarController : MonoBehaviour
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Euler(0, 0, angle);
 
-                if (Input.GetMouseButtonDown(0) && starCount > 0 && spriteRenderer.enabled)
+                if (Input.GetMouseButtonDown(0) && starCount > 0 && canThrow)
                 {
-                    ThrowStar();
+                    StartCoroutine(ThrowStar());
                 }
             }
             else 
@@ -75,20 +77,29 @@ public class NinjaStarController : MonoBehaviour
         }
     }
 
-    void ThrowStar()
+    IEnumerator ThrowStar()
     {
-        // Yıldızı görünmez yap
-        spriteRenderer.enabled = false;
+        canThrow = false;
 
+        spriteRenderer.enabled = false;
         audioSource.PlayOneShot(ninjaStarSFX);
+
         GameObject newStar = Instantiate(ninjaStarPrefab, starSpawnPoint.position, Quaternion.identity);
         newStar.GetComponent<Rigidbody2D>().velocity = (crosshair.position - starSpawnPoint.position).normalized * throwSpeed;
         newStar.transform.rotation = Quaternion.LookRotation(Vector3.forward, crosshair.position - starSpawnPoint.position);
         starCount--;
 
         Destroy(newStar, starDestroyTime);
-        StartCoroutine(ReturnStar());
+
+        yield return new WaitForSeconds(starCooldown);
+        canThrow = true;
+
+        if (starCount > 0 && player.isStarHolding)
+        {
+            spriteRenderer.enabled = true;
+        }
     }
+
 
     IEnumerator ReturnStar()
     {

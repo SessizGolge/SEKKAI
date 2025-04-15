@@ -14,8 +14,8 @@ public class MovementSettings
     public float speed = 5f;
     public float runSpeed = 7.5f;
     public float dashSpeed = 10f;
-    public float maxX = 6.5f;
-    public float maxY = 5f;
+    // public float maxX = 6.5f;
+    // public float maxY = 5f;
 }
 
 [System.Serializable]
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     [SerializeField] GameObject playerVFX;
     
-    [SerializeField] ObjectController objectController;
+    // [SerializeField] ObjectController objectController;
     [SerializeField] Animator anim;
     [SerializeField] Health healthComponent;
     private Vector2 direction;
@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead && !objectController.isOpened) 
+        if (!isDead) // && !objectController.isOpened
         {
             if (isCursed) 
             {
@@ -197,8 +197,8 @@ public class PlayerController : MonoBehaviour
         if (!isDead && !isDashing) 
         {
             Vector2 newPosition = rb.position + direction * movement.speed * Time.fixedDeltaTime;
-            newPosition.x = Mathf.Clamp(newPosition.x, -movement.maxX, movement.maxX);
-            newPosition.y = Mathf.Clamp(newPosition.y, -movement.maxY, movement.maxY);
+            // newPosition.x = Mathf.Clamp(newPosition.x, -movement.maxX, movement.maxX);
+            // newPosition.y = Mathf.Clamp(newPosition.y, -movement.maxY, movement.maxY);
             rb.MovePosition(newPosition);
         }
     }

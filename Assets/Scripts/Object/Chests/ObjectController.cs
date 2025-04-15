@@ -19,7 +19,6 @@ public class ObjectController : MonoBehaviour
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerInteractComponent = null;
         isOpened = false;
         interactKey = player.GetComponent<PlayerInteract>().interactKey;
         // Başlangıçta UI kapalı olmalı

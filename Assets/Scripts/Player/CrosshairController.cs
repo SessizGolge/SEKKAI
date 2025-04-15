@@ -5,18 +5,18 @@ using UnityEngine;
 public class CrosshairController : MonoBehaviour
 {
     [SerializeField] PlayerController player;
-    [SerializeField] ObjectController objectController;
+    // [SerializeField] ObjectController objectController;
 
-    void Update()
+    void FixedUpdate()
     {
-        if (!objectController.isOpened) 
-        {
-            Cursor.visible = false;
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = 0;
+        Cursor.visible = false;
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
 
-            transform.position = mousePos;
-        }
+        transform.position = mousePos;
+        // if (!objectController.isOpened) 
+        // {
+        // }
     }
 }
 
