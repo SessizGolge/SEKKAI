@@ -8,6 +8,8 @@ public class GameOverUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text waveText;
     [SerializeField] private TMP_Text enemiesKilledText;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip bgMusic, selectSFX, chooseSFX, startGameSFX;
 
     void Update()
     {

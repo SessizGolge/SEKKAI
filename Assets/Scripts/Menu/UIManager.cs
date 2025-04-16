@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject playerPauseScreen;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip selectSFX, chooseSFX;
 
     void Start() 
     {
