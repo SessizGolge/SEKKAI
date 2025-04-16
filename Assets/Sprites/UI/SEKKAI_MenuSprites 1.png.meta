@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8373f2132e44fa3428d11787ee886aa7
+guid: acb80c4029b2ba3469cedad4ce65433c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,43 +97,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SEKKAI_Logo_0
+      name: SEKKAI_MenuSprites 1_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 439
-        width: 61
-        height: 58
+        x: 10
+        y: 404
+        width: 13
+        height: 13
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b938fa2cf86087e4abb8364aeb2119a4
-      internalID: -984524900
+      spriteID: 0a35537c23ee6e5478c96816aba94d7e
+      internalID: -790751309
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SEKKAI_Logo_1
+      name: SEKKAI_MenuSprites 1_1
       rect:
         serializedVersion: 2
-        x: 65
-        y: 442
-        width: 57
-        height: 58
+        x: 25
+        y: 404
+        width: 13
+        height: 13
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b35664a79a1201348b1be0087743c5f4
-      internalID: 181500761
+      spriteID: 10c1e013bfd65f24f84df410ec5d5c4a
+      internalID: 1847753971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 1_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 404
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781f6ec5d975a4942b5c4c9b7efadcd7
+      internalID: -205237397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 1_3
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 397
+        width: 43
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81999090f30f6894db5c1c6735f1f446
+      internalID: 1388412029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 1_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 396
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 113cd1e053e6abd4bb559745dbdeec99
+      internalID: -1176356758
       vertices: []
       indices: 
       edges: []
@@ -149,8 +212,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SEKKAI_Logo_0: -984524900
-      SEKKAI_Logo_1: 181500761
+      SEKKAI_MenuSprites 1_0: -790751309
+      SEKKAI_MenuSprites 1_1: 1847753971
+      SEKKAI_MenuSprites 1_2: -205237397
+      SEKKAI_MenuSprites 1_3: 1388412029
+      SEKKAI_MenuSprites 1_4: -1176356758
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

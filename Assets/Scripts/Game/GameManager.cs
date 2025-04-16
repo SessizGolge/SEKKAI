@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
     [Header("Spawn Sistemi")]
     [SerializeField] public GameObject[] enemySpawnpoints;
     [SerializeField] public GameObject kagenari;
@@ -17,22 +19,40 @@ public class GameManager : MonoBehaviour
 
     private List<GameObject> aliveEnemies = new List<GameObject>();
     private bool isSpawning = false;
+
+    public int totalEnemiesKilled = 0;
     public int playerHealth;
+
+    void Awake()
+    {
+        // Singleton sistemi
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     void Start()
     {
+        // PlayerPrefs başlangıç değerlerini ayarla
+        PlayerPrefs.SetInt("KilledEnemies", 0);
+        PlayerPrefs.SetInt("WavesCompleted", 1);
+
         playerHealth = playerHealthComponent.currentHealth;
         StartCoroutine(SpawnWave());
     }
 
     void Update()
     {
+        // Ölü düşmanları listeden temizle
         aliveEnemies.RemoveAll(enemy => enemy == null);
 
+        // Tüm düşmanlar öldüyse yeni dalga başlat
         if (aliveEnemies.Count == 0 && !isSpawning)
         {
             wawe++;
             difficulty++;
+            PlayerPrefs.SetInt("WavesCompleted", wawe); // PlayerPrefs'e yaz
             StartCoroutine(SpawnWave());
         }
     }
@@ -40,7 +60,6 @@ public class GameManager : MonoBehaviour
     IEnumerator SpawnWave()
     {
         isSpawning = true;
-
         yield return new WaitForSeconds(2f);
 
         int totalEnemies = enemiesPerWave * difficulty;
@@ -60,5 +79,11 @@ public class GameManager : MonoBehaviour
 
         isSpawning = false;
     }
-}
 
+    // Düşman öldüğünde bu fonksiyon çağrılır
+    public void EnemyKilled()
+    {
+        totalEnemiesKilled++;
+        PlayerPrefs.SetInt("KilledEnemies", totalEnemiesKilled);
+    }
+}

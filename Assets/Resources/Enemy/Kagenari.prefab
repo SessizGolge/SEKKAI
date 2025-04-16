@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6918264106221491644}
   - component: {fileID: 7722031601835362808}
+  - component: {fileID: 7710281922549833917}
   - component: {fileID: 369976045062859804}
   - component: {fileID: 7602130478557205430}
   - component: {fileID: 6894684471735287683}
@@ -188,6 +189,24 @@ MonoBehaviour:
   audioSource: {fileID: 3207047130628600450}
   knife: {fileID: 8300000, guid: 81144640d6aef934886c67380d17182b, type: 3}
   enemyHealthValue: {fileID: 6364536815387392345}
+  minHealthDrop: 5
+  maxHealthDrop: 16
+--- !u!114 &7710281922549833917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884622538059395185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275ab5b87376edf42bdac30c3a2691ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minCoin: 0
+  maxCoin: 20
+  healthComponent: {fileID: 7602130478557205430}
+  player: {fileID: 7003296026397565973, guid: 24e646780f7e77344b3bd4eb4f11c826, type: 3}
 --- !u!114 &369976045062859804
 MonoBehaviour:
   m_ObjectHideFlags: 0

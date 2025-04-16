@@ -31,6 +31,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] public AudioClip knife;
     public Image enemyHealthValue;
     public Coroutine enemyHealthbarCoroutine;
+    
+    public int minHealthDrop = 5;
+    public int maxHealthDrop = 16;
 
     void Start()
     {
@@ -204,7 +207,33 @@ public class EnemyController : MonoBehaviour
         anim.speed = 0.5f;
         anim.SetTrigger("KagenariDied");
         yield return new WaitForSeconds(0.7f); // Ölme animasyonu süresi
+        GameManager.Instance.EnemyKilled();
+        HealPlayerRandomly();
         Destroy(gameObject); // Düşmanı yok et
+    }
+
+    void HealPlayerRandomly()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Health playerHealth = player.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                int randomHeal = Random.Range(minHealthDrop, maxHealthDrop + 1);
+                int possibleHeal = Mathf.Min(randomHeal, playerHealth.maxHealth - playerHealth.currentHealth);
+
+                if (possibleHeal > 0)
+                {
+                    playerHealth.currentHealth += possibleHeal;
+                    Debug.Log("Oyuncuya " + possibleHeal + " can verildi.");
+                }
+                else
+                {
+                    Debug.Log("Oyuncunun canı zaten dolu.");
+                }
+            }
+        }
     }
 
     IEnumerator Attack()

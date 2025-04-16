@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -56,7 +57,7 @@ public class UIElements
     public Image healthValue;
     public Image cursedEnergyBar;
     public Image cursedEnergyValue;
-    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber;
+    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber, coinNumber;
 }
 
 [System.Serializable]
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player States")]
     [SerializeField] Rigidbody2D rb;
     [SerializeField] GameObject playerVFX;
+    [SerializeField] GameObject gameOverScreen;
     
     // [SerializeField] ObjectController objectController;
     [SerializeField] Animator anim;
@@ -105,6 +107,7 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
+        gameOverScreen.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         healthComponent = GetComponent<Health>();
         
@@ -132,6 +135,7 @@ public class PlayerController : MonoBehaviour
                 uiElements.cursedEnergyBar.gameObject.SetActive(false);
             }
 
+            UpdateCoins();
             UpdateHealthBar();
             HandleMovementInput();
             HandleWeaponSwitching();
@@ -333,7 +337,10 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetTrigger("AkaiCursedDied");
         }
-
+        
+        weapons.crosshair.SetActive(false);
+        Cursor.visible = true;
+        gameOverScreen.SetActive(true);
         yield return new WaitForSeconds(0.7f); // Ölme animasyonunun süresine göre ayarla
         Destroy(gameObject);
     }
@@ -446,5 +453,9 @@ public class PlayerController : MonoBehaviour
         {
             uiElements.cursedEnergyNumber.text = cursedEnergySettings.cursedEnergy.ToString();
         }
+    }
+    void UpdateCoins() 
+    {
+        uiElements.coinNumber.text = PlayerPrefs.GetInt("coin").ToString();
     }
 }

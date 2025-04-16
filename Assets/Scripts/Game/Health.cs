@@ -23,6 +23,13 @@ public class Health : MonoBehaviour
         maxHealth = healthValue;
         IsDead = false;
     }
+    void Update()
+    {
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }   
+    }
 
     // Can kaybetme işlemi
     // Can kaybetme işlemi
