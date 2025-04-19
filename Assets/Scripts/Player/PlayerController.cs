@@ -57,7 +57,7 @@ public class UIElements
     public Image healthValue;
     public Image cursedEnergyBar;
     public Image cursedEnergyValue;
-    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber, coinNumber;
+    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber, coinNumber, killStateValue, waveStateValue;
 }
 
 [System.Serializable]
@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
             }
 
             UpdateCoins();
+            UpdateStates();
             UpdateHealthBar();
             HandleMovementInput();
             HandleWeaponSwitching();
@@ -143,6 +144,13 @@ public class PlayerController : MonoBehaviour
             HandleDash();
             RegenerateStamina();
         }
+        else {uiElements.UIBar.gameObject.SetActive(false);}
+    }
+
+    private void UpdateStates()
+    {
+        uiElements.killStateValue.text = PlayerPrefs.GetInt("KilledEnemies").ToString();
+        uiElements.waveStateValue.text = PlayerPrefs.GetInt("WavesCompleted").ToString();
     }
 
     public void TakeDamage(GameObject source, int damage)

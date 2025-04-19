@@ -1,0 +1,664 @@
+fileFormatVersion: 2
+guid: eac5bfa9fd4ca21489360d5ffd5ce2c9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 477
+        width: 62
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e44dd7cd95de6074f86ccdf0c57e4421
+      internalID: -1163286368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_1
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 433
+        width: 62
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 325ebc6a980085443a2e752945ade3f6
+      internalID: 1097771013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_2
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 442
+        width: 80
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dce5c9758385a2b45ad0e8d384e6d17a
+      internalID: -254419696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_3
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 463
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbf236a66b770134b9a6408b23e6bce2
+      internalID: 802423015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_4
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 449
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9f03914a68443042b8479be13e45b4a
+      internalID: -837411769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_5
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 435
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b3d8dd106e8b78469b263f1fbd51798
+      internalID: 1842479689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_6
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 423
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 809d142b7ccd7e84abfd8335e87992ca
+      internalID: -205005813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_7
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 423
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7016a77f8c30f0c46b9a6b31de28399c
+      internalID: -54972000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_8
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 423
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7393c63def238ee4da3ee28e198fdf7f
+      internalID: -1238643971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_9
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 423
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c713b8af3019da42bd53bbe9a38d5c3
+      internalID: -1522842959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_10
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 421
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68f0ccc681728e84cb44c44bb8294827
+      internalID: 573242737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_11
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 392
+        width: 62
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea0575ed6755293418974616dd9cd933
+      internalID: 1061336944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_12
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 407
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2322bcc9639a3ea4bb8ca89ff75e0280
+      internalID: -1416382668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_13
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 416
+        width: 43
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 831085aec0f83dc419c04b1f16b59c9e
+      internalID: -1881804624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_14
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 415
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd9a73e9171ed5948a43348a6ce45df4
+      internalID: 1517207835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_15
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 393
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 647cd8d68815a354aa9a3e977b0529f9
+      internalID: 492865315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 400
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1049e379a2f32e4db4f24a7b0b6f221
+      internalID: -851026936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_17
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 400
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9bf2ebc70562374cae69e828ca903ac
+      internalID: -759498267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_18
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 400
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32a76f412ba1ba54dba77ba7f759abdd
+      internalID: 2074721699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_19
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 379
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d79d3a45e4ac0a14db1c7cdb219b8682
+      internalID: -1118946676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_20
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 365
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88f9372b93fb3d54bb244cba519a5478
+      internalID: 13479035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_21
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 351
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55fea80694f46b14ba21250b1cfa71bf
+      internalID: 2041211062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_22
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 337
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de98800d86e72b648a07a4af93c4f23d
+      internalID: 244874552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_23
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 323
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44950c5a4008f784e970c5cdc0c2febb
+      internalID: -2097604774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SEKKAI_MenuSprites 5_24
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 309
+        width: 46
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd8e8114ec233f247b264e29822de438
+      internalID: 280762334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SEKKAI_MenuSprites 5_0: -1163286368
+      SEKKAI_MenuSprites 5_1: 1097771013
+      SEKKAI_MenuSprites 5_10: 573242737
+      SEKKAI_MenuSprites 5_11: 1061336944
+      SEKKAI_MenuSprites 5_12: -1416382668
+      SEKKAI_MenuSprites 5_13: -1881804624
+      SEKKAI_MenuSprites 5_14: 1517207835
+      SEKKAI_MenuSprites 5_15: 492865315
+      SEKKAI_MenuSprites 5_16: -851026936
+      SEKKAI_MenuSprites 5_17: -759498267
+      SEKKAI_MenuSprites 5_18: 2074721699
+      SEKKAI_MenuSprites 5_19: -1118946676
+      SEKKAI_MenuSprites 5_2: -254419696
+      SEKKAI_MenuSprites 5_20: 13479035
+      SEKKAI_MenuSprites 5_21: 2041211062
+      SEKKAI_MenuSprites 5_22: 244874552
+      SEKKAI_MenuSprites 5_23: -2097604774
+      SEKKAI_MenuSprites 5_24: 280762334
+      SEKKAI_MenuSprites 5_3: 802423015
+      SEKKAI_MenuSprites 5_4: -837411769
+      SEKKAI_MenuSprites 5_5: 1842479689
+      SEKKAI_MenuSprites 5_6: -205005813
+      SEKKAI_MenuSprites 5_7: -54972000
+      SEKKAI_MenuSprites 5_8: -1238643971
+      SEKKAI_MenuSprites 5_9: -1522842959
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

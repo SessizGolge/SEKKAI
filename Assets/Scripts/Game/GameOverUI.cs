@@ -6,18 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text waveText;
-    [SerializeField] private TMP_Text enemiesKilledText;
+    [SerializeField] Health player;
     [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip bgMusic, selectSFX, chooseSFX, startGameSFX;
+    [SerializeField] AudioSource musicSource;
+    [SerializeField] AudioClip bgMusic, selectSFX, chooseSFX, startGameSFX, gameOver;
+    public bool isGameOver = true;
+    public bool isDead;
 
     void Update()
     {
-        int waves = PlayerPrefs.GetInt("WavesCompleted", 0);
-        int killed = PlayerPrefs.GetInt("KilledEnemies", 0);
-
-        waveText.text = waves.ToString();
-        enemiesKilledText.text = killed.ToString();
+        isDead = player.IsDead;
+        
+        if (isDead && isGameOver) 
+        {
+            audioSource.PlayOneShot(gameOver);
+            musicSource.Stop();
+            isGameOver = false;
+        }
     }
 
     public void RetryButton() 

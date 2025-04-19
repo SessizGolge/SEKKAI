@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +9,8 @@ public class GameManager : MonoBehaviour
     [Header("Spawn Sistemi")]
     [SerializeField] public GameObject[] enemySpawnpoints;
     [SerializeField] public GameObject kagenari;
-    [SerializeField] public int wawe = 1; // Başlangıç dalgası
-    [SerializeField] public int difficulty = 1; // Zorluk çarpanı
+    [SerializeField] public int wawe = 1;
+    [SerializeField] public int difficulty = 1;
     [SerializeField] public int enemiesPerWave = 3;
 
     [Header("Player")]
@@ -25,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton sistemi
         if (Instance == null)
             Instance = this;
         else
@@ -34,7 +32,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // PlayerPrefs başlangıç değerlerini ayarla
+        Screen.SetResolution(1600, 1200, true);
+
+        // İlk değerleri ayarla
         PlayerPrefs.SetInt("KilledEnemies", 0);
         PlayerPrefs.SetInt("WavesCompleted", 1);
 
@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // Ölü düşmanları listeden temizle
         aliveEnemies.RemoveAll(enemy => enemy == null);
 
         // Tüm düşmanlar öldüyse yeni dalga başlat
@@ -52,7 +51,16 @@ public class GameManager : MonoBehaviour
         {
             wawe++;
             difficulty++;
-            PlayerPrefs.SetInt("WavesCompleted", wawe); // PlayerPrefs'e yaz
+            PlayerPrefs.SetInt("WavesCompleted", wawe);
+
+            // PR kontrolü (Wave)
+            int wavePR = PlayerPrefs.GetInt("PR_WavesCompleted", 1);
+            if (wawe > wavePR)
+            {
+                PlayerPrefs.SetInt("PR_WavesCompleted", wawe);
+                Debug.Log("Yeni wave rekoru! → " + wawe);
+            }
+
             StartCoroutine(SpawnWave());
         }
     }
@@ -76,14 +84,20 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Dalga " + wawe + " başlatıldı. Düşman sayısı: " + totalEnemies);
-
         isSpawning = false;
     }
 
-    // Düşman öldüğünde bu fonksiyon çağrılır
     public void EnemyKilled()
     {
         totalEnemiesKilled++;
         PlayerPrefs.SetInt("KilledEnemies", totalEnemiesKilled);
+
+        // PR kontrolü (Kill)
+        int killPR = PlayerPrefs.GetInt("PR_KilledEnemies", 0);
+        if (totalEnemiesKilled > killPR)
+        {
+            PlayerPrefs.SetInt("PR_KilledEnemies", totalEnemiesKilled);
+            Debug.Log("Yeni kill rekoru! → " + totalEnemiesKilled);
+        }
     }
 }
