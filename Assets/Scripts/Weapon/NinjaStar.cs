@@ -14,11 +14,11 @@ public class NinjaStar : MonoBehaviour
     {
         // Rigidbody2D bileşenini al
         rb = GetComponent<Rigidbody2D>();
-        starDamageValue = playerController.weapons.starDamage;
     }
 
     void Update()
     {
+        starDamageValue = playerController.weapons.starDamage;
         // Yıldız hareket ettikten sonra çarpışma kontrolünü sürekli yapmak için
         DetectColliders();
     }

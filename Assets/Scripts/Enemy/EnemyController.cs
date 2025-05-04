@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Stats")]
     [SerializeField] Health healthComponent; // Health Script
-    [SerializeField] int damage = 20;
+    [SerializeField] public int damage = 20;
     [SerializeField] float speed = 3f;
     [SerializeField] float detectionRange = 6f;
     [SerializeField] float attackRange = 1.5f;
@@ -226,7 +226,6 @@ public class EnemyController : MonoBehaviour
                 if (possibleHeal > 0)
                 {
                     playerHealth.currentHealth += possibleHeal;
-                    Debug.Log("Oyuncuya " + possibleHeal + " can verildi.");
                 }
                 else
                 {

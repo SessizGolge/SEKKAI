@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4ebb71451d27aa148b64e05cc57c1154
+guid: fd73413f3ab4a89428038ba57c40373b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,13 +43,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 256, y: 437, z: 162, w: 46}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -95,48 +95,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Terrain_3
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 437
-        width: 82
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 161666db825736b41887db8d6d822014
-      internalID: 1221659478
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Terrain_0: -1166163762
-      Terrain_1: -194138669
-      Terrain_2: -1704534543
-      Terrain_3: 1221659478
-      Terrain_4: 248419673
-      Terrain_5: 1786128674
-      Terrain_6: 1694072858
-      Terrain_7: 266974557
-      Terrain_8: 299500268
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

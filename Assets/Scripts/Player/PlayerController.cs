@@ -43,6 +43,7 @@ public class WeaponObjects
     public GameObject sword;
     public GameObject ninjaStar;
     [SerializeField] public int starDamage = 25;
+    [SerializeField] public int attackDamage = 20;
     public GameObject crosshair;
 }
 
@@ -99,10 +100,9 @@ public class PlayerController : MonoBehaviour
     private Coroutine healthBarCoroutine, staminaBarCoroutine, cursedEnergyCoroutine;
     [SerializeField] private float slowDuration = 0.5f;
     [SerializeField] private float slowMultiplier = 0.5f;
-
     private bool isSlowed = false;
     private float originalSpeed;
-
+    public bool shouldMove = true;
     
     
     void Start()
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
     {
         bool isDead = healthComponent.IsDead;
 
-        if (!isDead) // && !objectController.isOpened
+        if (!isDead && shouldMove) // && !objectController.isOpened
         {
             if (isCursed) 
             {
@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
             HandleDash();
             RegenerateStamina();
         }
-        else {uiElements.UIBar.gameObject.SetActive(false);}
+        else if (isDead) {uiElements.UIBar.gameObject.SetActive(false);}
     }
 
     private void UpdateStates()
@@ -220,10 +220,12 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
         direction = new Vector2(moveHorizontal, moveVertical).normalized;
-
-        if (moveHorizontal > 0) facingRight = true;
-        else if (moveHorizontal < 0) facingRight = false;
-
+        if (shouldMove) 
+        {
+            if (moveHorizontal > 0) facingRight = true;
+            else if (moveHorizontal < 0) facingRight = false;
+        }
+        
         UpdateAnimations(moveHorizontal, moveVertical);
     }
 
@@ -245,7 +247,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleSprint()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && staminaSettings.stamina > staminaSettings.sprintDuration)
+        if (Input.GetKey(KeyCode.LeftShift) && staminaSettings.stamina > staminaSettings.sprintDuration && shouldMove)
         {
             isSprinting = true;
             movement.speed = movement.runSpeed;
@@ -273,7 +275,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleDash()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && staminaSettings.stamina >= staminaSettings.dashCost && !isDashing)
+        if (Input.GetKeyDown(KeyCode.Space) && staminaSettings.stamina >= staminaSettings.dashCost && !isDashing && shouldMove)
         {
             StartCoroutine(Dash());
         }

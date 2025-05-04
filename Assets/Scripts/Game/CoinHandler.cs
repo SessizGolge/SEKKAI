@@ -6,6 +6,8 @@ public class CoinHandler : MonoBehaviour
     [SerializeField] private int maxCoin = 20;
     [SerializeField] private Health healthComponent;
     [SerializeField] private PlayerController player;
+    [SerializeField] public AudioSource sfxSource;
+    [SerializeField] public AudioClip coinSFX;
 
     private bool hasGivenReward = false;
 
@@ -31,6 +33,6 @@ public class CoinHandler : MonoBehaviour
     {
         int coinAmount = Random.Range(minCoin, maxCoin + 1);
         PlayerPrefs.SetInt("coin", PlayerPrefs.GetInt("coin") + coinAmount); // var olan değere ekle
-        Debug.Log("Oyuncuya " + coinAmount + " coin verildi.");
+        sfxSource.PlayOneShot(coinSFX);
     }
 }

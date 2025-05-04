@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] public AudioClip dieSFX, hitSFX;
+    [SerializeField] public GameObject blood;
 
     // Sağlık başlatma
     public void InitializeHealth(int healthValue)
@@ -32,7 +33,6 @@ public class Health : MonoBehaviour
     }
 
     // Can kaybetme işlemi
-    // Can kaybetme işlemi
     public void GetHit(int amount, GameObject sender, GameObject target)
     {
         audioSource = target.GetComponent<AudioSource>();
@@ -44,23 +44,37 @@ public class Health : MonoBehaviour
 
         currentHealth -= amount;
 
-        // Darbe ses efekti
-        if (hitSFX != null)
+        if (!IsDead) 
         {
-            audioSource.PlayOneShot(hitSFX);
+            // Darbe ses efekti
+            if (hitSFX != null)
+            {
+                audioSource.PlayOneShot(hitSFX);
+            }
+
+            // Kan efektini oluştur
+            GameObject spawnedBlood = Instantiate(blood, transform.position, Quaternion.identity);
+            StartCoroutine(DestroyBlood(spawnedBlood));
         }
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             IsDead = true;
-            OnDeath?.Invoke(sender);  // Ölüm event'ini çağır
-            Die(target);  // Ölüm işlemine geç
+            OnDeath?.Invoke(sender);
+            Die(target);
         }
         else
         {
-            OnHit?.Invoke(sender);  // Darbe event'ini çağır
+            OnHit?.Invoke(sender);
         }
+    }
+
+    // Instantiate edilen kanı yok eden coroutine
+    IEnumerator DestroyBlood(GameObject spawnedBlood)
+    {
+        yield return new WaitForSeconds(0.35f);
+        Destroy(spawnedBlood);
     }
 
     // Ölüm işlemi

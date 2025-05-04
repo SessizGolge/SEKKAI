@@ -174,12 +174,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 6078154890514844690, guid: 24e646780f7e77344b3bd4eb4f11c826, type: 3}
   damage: 13
-  speed: 3
+  speed: 5
   detectionRange: 5
   attackRange: 1.5
   attackCooldown: 1.5
   patrolDistance: 3
-  patrolSpeed: 1.5
+  patrolSpeed: 2
   anim: {fileID: 7249942817460900939}
   rb: {fileID: 6894684471735287683}
   kagenariVFX: {fileID: 812718167622842886}
@@ -207,6 +207,8 @@ MonoBehaviour:
   maxCoin: 20
   healthComponent: {fileID: 7602130478557205430}
   player: {fileID: 7003296026397565973, guid: 24e646780f7e77344b3bd4eb4f11c826, type: 3}
+  sfxSource: {fileID: 3207047130628600450}
+  coinSFX: {fileID: 8300000, guid: e19579ed626fbea419c71f005440f2e9, type: 3}
 --- !u!114 &369976045062859804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +246,7 @@ MonoBehaviour:
   audioSource: {fileID: 3207047130628600450}
   dieSFX: {fileID: 8300000, guid: e570c22e5d4dfca40af9536d8c762eac, type: 3}
   hitSFX: {fileID: 8300000, guid: 9e0708e22dfc08d4da4e32a09b209a5f, type: 3}
+  blood: {fileID: 8460096768987693439, guid: eb6cbd98416a74342a7354f7ccbebc50, type: 3}
 --- !u!50 &6894684471735287683
 Rigidbody2D:
   serializedVersion: 4
@@ -315,7 +318,7 @@ AudioSource:
   m_GameObject: {fileID: 884622538059395185}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7734245669047390025, guid: 3949a5161ab902940950e2b0c9a04d6d, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
