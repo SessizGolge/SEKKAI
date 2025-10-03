@@ -1,163 +1,105 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
+using System.Collections.Generic;
+using Cinemachine;
+using System.Collections;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
-    public static GameManager Instance { get; private set; }
+    [Header("Player Settings")]
+    [SerializeField] private GameObject playerPrefab;
 
-    [Header("UI")]
-    [SerializeField] private TMP_Text enemyCountText;
-    [SerializeField] private TMP_Text waveInfoText;
+    [Header("Spawn Points")]
+    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
-    [Header("Spawn Sistemi")]
-    [SerializeField] public GameObject[] enemySpawnpoints;
-    [SerializeField] public GameObject kagenari;
-    [SerializeField] public int wawe = 1;
-    [SerializeField] public int difficulty = 1;
-    [SerializeField] public int enemiesPerWave = 3;
+    [Header("Cinemachine")]
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    [Header("Player")]
-    [SerializeField] public Health playerHealthComponent;
-    [SerializeField] private Transform playerSpawn;
-    [SerializeField] private Transform playerTransform;
-    [SerializeField] public AudioSource sfxSource;
-    [SerializeField] public AudioClip waveStartedSound;
-    [SerializeField] public Animator animPlayer;
-
-    private List<GameObject> aliveEnemies = new List<GameObject>();
-    private bool isSpawning = false;
-
-    public int totalEnemiesKilled = 0;
-    public int playerHealth;
-    public float wavePrepareTime = 0.1f;
-
-    void Awake()
+    IEnumerator Start()
     {
-        if (Instance == null)
-            Instance = this;
+        if (playerPrefab == null)
+        {
+            Debug.LogError("Player prefab eksik!");
+        }
+
+        SetLocalCostumeToPhoton();
+
+        GameObject playerInstance;
+
+        if (spawnPoints.Count == 0)
+        {
+            playerInstance = SpawnRandom();
+        }
         else
-            Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        Screen.SetResolution(1600, 1200, true);
-
-        PlayerPrefs.SetInt("KilledEnemies", 0);
-        PlayerPrefs.SetInt("WavesCompleted", 1);
-
-        playerHealth = playerHealthComponent.currentHealth;
-        StartCoroutine(SpawnWave());
-    }
-
-    void Update()
-    {
-        aliveEnemies.RemoveAll(enemy => enemy == null);
-        UpdateEnemyUI();
-
-        if (aliveEnemies.Count == 0 && !isSpawning)
         {
-            wawe++;
-            difficulty++;
-            PlayerPrefs.SetInt("WavesCompleted", wawe);
+            int index = PhotonNetwork.LocalPlayer.ActorNumber % spawnPoints.Count;
+            Transform spawnPoint = spawnPoints[index];
+            playerInstance = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+        }
 
-            int wavePR = PlayerPrefs.GetInt("PR_WavesCompleted", 1);
-            if (wawe > wavePR)
-            {
-                PlayerPrefs.SetInt("PR_WavesCompleted", wawe);
-            }
+        yield return null;
 
-            StartCoroutine(SpawnWave());
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            GameObject pGO = (p == PhotonNetwork.LocalPlayer) ? playerInstance : FindPlayerGOByPhoton(p);
+            if (pGO != null)
+                ApplyPlayerCostume(p, pGO);
+        }
+
+        if (virtualCamera != null && playerInstance != null)
+        {
+            virtualCamera.Follow = playerInstance.transform;
+            virtualCamera.LookAt = playerInstance.transform;
         }
     }
 
-    IEnumerator SpawnWave()
+    private void SetLocalCostumeToPhoton()
     {
-        isSpawning = true;
-        yield return new WaitForSeconds(1f);
-        // Oyuncuyu sabitle ve spawn noktasına taşı
-        if (playerTransform != null && playerSpawn != null)
-        {
-            playerTransform.position = playerSpawn.position;
+        int top = PlayerPrefs.GetInt("TopIndex", 0);
+        int torso = PlayerPrefs.GetInt("TorsoIndex", 0);
+        int bottom = PlayerPrefs.GetInt("BottomIndex", 0);
 
-            var movement = playerTransform.GetComponent<PlayerController>();
-            if (movement != null)
-            {
-                movement.shouldMove = false;
-                animPlayer.SetBool("AkaiStand", true);
-                animPlayer.SetBool("AkaiWalk", false);
-            }
-        }
+        ExitGames.Client.Photon.Hashtable costumeProps = new ExitGames.Client.Photon.Hashtable();
+        costumeProps["TopIndex"] = top;
+        costumeProps["TorsoIndex"] = torso;
+        costumeProps["BottomIndex"] = bottom;
 
-        ShowWaveInfo("Preparing Next Wave...");
-        yield return new WaitForSeconds(2f);
-
-        int totalEnemies = enemiesPerWave * difficulty;
-        int extraDamage = (wawe / 3) + 1;
-
-        for (int i = 0; i < totalEnemies; i++)
-        {
-            int randomIndex = Random.Range(0, enemySpawnpoints.Length);
-            Transform spawnPoint = enemySpawnpoints[randomIndex].transform;
-
-            GameObject enemy = Instantiate(kagenari, spawnPoint.position, Quaternion.identity);
-
-            // Düşman hasarını artır
-            EnemyController enemyDamage = enemy.GetComponent<EnemyController>();
-            if (enemyDamage != null)
-            {
-                enemyDamage.damage += extraDamage;
-            }
-
-            aliveEnemies.Add(enemy);
-            yield return new WaitForSeconds(wavePrepareTime);
-        }
-
-        // Oyuncuya kontrolü geri ver
-        if (playerTransform != null)
-        {
-            var movement = playerTransform.GetComponent<PlayerController>();
-            if (movement != null)
-                movement.shouldMove = true;
-        }
-
-
-        ShowWaveInfo("The Next Wave Started!");
-        sfxSource.PlayOneShot(waveStartedSound);
-        yield return new WaitForSeconds(2f);
-        ShowWaveInfo(""); // Mesajı temizle
-
-        isSpawning = false;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(costumeProps);
     }
 
-    public void EnemyKilled()
+    public void ApplyPlayerCostume(Player player, GameObject playerGO)
     {
-        totalEnemiesKilled++;
-        PlayerPrefs.SetInt("KilledEnemies", totalEnemiesKilled);
+        var props = player.CustomProperties;
 
-        int killPR = PlayerPrefs.GetInt("PR_KilledEnemies", 0);
-        if (totalEnemiesKilled > killPR)
-        {
-            PlayerPrefs.SetInt("PR_KilledEnemies", totalEnemiesKilled);
-        }
+        int top = props.ContainsKey("TopIndex") ? (int)props["TopIndex"] : 0;
+        int torso = props.ContainsKey("TorsoIndex") ? (int)props["TorsoIndex"] : 0;
+        int bottom = props.ContainsKey("BottomIndex") ? (int)props["BottomIndex"] : 0;
+
+        var cm = playerGO.GetComponent<PlayerCostumeManager>();
+        StartCoroutine(ApplyCostumeNextFrame(cm, top, torso, bottom));
     }
 
-    private void UpdateEnemyUI()
+    private IEnumerator ApplyCostumeNextFrame(PlayerCostumeManager cm, int top, int torso, int bottom)
     {
-        if (enemyCountText != null)
-        {
-            enemyCountText.text = aliveEnemies.Count.ToString();
-        }
+        yield return null; // 1 frame bekle
+        cm.SetCostume(top, torso, bottom);
     }
 
-    private void ShowWaveInfo(string message)
+    private GameObject SpawnRandom()
     {
-        if (waveInfoText != null)
+        Vector3 randomPos = new Vector3(Random.Range(-5f, 5f), Random.Range(-3f, 3f), 0f);
+        return PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
+    }
+
+    private GameObject FindPlayerGOByPhoton(Player player)
+    {
+        foreach (var go in GameObject.FindGameObjectsWithTag("Player"))
         {
-            waveInfoText.text = message;
-            waveInfoText.alpha = 1f;
+            PhotonView pv = go.GetComponent<PhotonView>();
+            if (pv != null && pv.Owner == player)
+                return go;
         }
+        return null;
     }
 }

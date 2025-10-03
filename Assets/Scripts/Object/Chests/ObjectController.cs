@@ -7,7 +7,7 @@ public class ObjectController : MonoBehaviour
     public bool isOpened = false; // Sandığın açık mı olduğunu kontrol etmek için
     [SerializeField] private GameObject player; // Oyuncu
     [SerializeField] public SpriteRenderer spriteRenderer;
-    [SerializeField] private PlayerInteract playerInteractComponent;
+    // [SerializeField] private PlayerInteract playerInteractComponent;
     [SerializeField] private GameObject chestUI; // UI paneli
     [SerializeField] private KeyCode interactKey; // Etkileşim tuşu
     [SerializeField] private float interactionDistance = 2f; // Etkileşim mesafesi
@@ -20,7 +20,7 @@ public class ObjectController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         isOpened = false;
-        interactKey = player.GetComponent<PlayerInteract>().interactKey;
+        // interactKey = player.GetComponent<PlayerInteract>().interactKey;
         // Başlangıçta UI kapalı olmalı
         chestUI.SetActive(false);
     }

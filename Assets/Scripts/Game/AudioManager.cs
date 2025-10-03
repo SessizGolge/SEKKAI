@@ -11,9 +11,14 @@ public class AudioManager : MonoBehaviour
 
     public void Start()
     {
-        masterSlider.value = PlayerPrefs.GetFloat("SavedMasterVolume");
-        musicSlider.value = PlayerPrefs.GetFloat("SavedMusicVolume");
-        SFXSlider.value = PlayerPrefs.GetFloat("SavedSFXVolume");
+        if(masterSlider != null)
+            masterSlider.value = PlayerPrefs.GetFloat("SavedMasterVolume", 100);
+
+        if(musicSlider != null)
+            musicSlider.value = PlayerPrefs.GetFloat("SavedMusicVolume", 50);
+
+        if(SFXSlider != null)
+            SFXSlider.value = PlayerPrefs.GetFloat("SavedSFXVolume", 50);
     }
 
     public void SetMasterVolume(float _value) 
@@ -23,7 +28,7 @@ public class AudioManager : MonoBehaviour
             _value = .001f;
         }
 
-        RefreshMasterSlider(_value);
+        // RefreshMasterSlider(_value);
         PlayerPrefs.SetFloat("SavedMasterVolume", _value);
         audioMixer.SetFloat("Master", Mathf.Log10(_value / 100) * 20f);
     }
@@ -35,7 +40,7 @@ public class AudioManager : MonoBehaviour
             _value = .001f;
         }
 
-        RefreshMusicSlider(_value);
+        // RefreshMusicSlider(_value);
         PlayerPrefs.SetFloat("SavedMusicVolume", _value);
         audioMixer.SetFloat("Music", Mathf.Log10(_value / 100) * 20f);
     }
@@ -47,7 +52,7 @@ public class AudioManager : MonoBehaviour
             _value = .001f;
         }
 
-        RefreshSFXSlider(_value);
+        // RefreshSFXSlider(_value);
         PlayerPrefs.SetFloat("SavedSFXVolume", _value);
         audioMixer.SetFloat("SFX", Mathf.Log10(_value / 100) * 20f);
     }

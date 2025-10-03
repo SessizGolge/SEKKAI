@@ -40,7 +40,7 @@ public class NinjaStarController : MonoBehaviour
         if (!isDead) // && !objectController.isOpened
         {
             starCountText.text = starCount.ToString();
-            isStarHolding = player.isStarHolding;
+            // isStarHolding = player.isStarHolding;
 
             if (isStarHolding)
             {
@@ -94,10 +94,10 @@ public class NinjaStarController : MonoBehaviour
         yield return new WaitForSeconds(starCooldown);
         canThrow = true;
 
-        if (starCount > 0 && player.isStarHolding)
-        {
-            spriteRenderer.enabled = true;
-        }
+        // if (starCount > 0 && player.isStarHolding)
+        // {
+        //     spriteRenderer.enabled = true;
+        // }
     }
 
 
@@ -129,10 +129,10 @@ public class NinjaStarController : MonoBehaviour
                 starCount++;
 
                 // Eğer oyuncu hala yıldızı tutuyorsa, görünürlük aç
-                if (starCount > 0 && player.isStarHolding) 
-                {
-                    spriteRenderer.enabled = true;
-                }
+                // if (starCount > 0 && player.isStarHolding) 
+                // {
+                //     spriteRenderer.enabled = true;
+                // }
             }
         }
     }

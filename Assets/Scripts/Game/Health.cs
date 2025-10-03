@@ -93,8 +93,8 @@ public class Health : MonoBehaviour
                 PlayerController targetComponent = target.GetComponent<PlayerController>();
                 if (targetComponent != null)
                 {
-                    targetComponent.UpdateAnimations(0, 0);
-                    StartCoroutine(targetComponent.HandleDeath());
+                    // targetComponent.UpdateAnimations(0, 0);
+                    // StartCoroutine(targetComponent.HandleDeath());
                 }
 
                 // Ölüm ses efekti
@@ -125,11 +125,11 @@ public class Health : MonoBehaviour
 
 
     // UI güncellemeleri için bir metot, örneğin sağlık çubuğunu güncellemek için
-    public void UpdateHealthBar(UIElements uiElements)
-    {
-        if (uiElements.healthValue != null)
-        {
-            uiElements.healthValue.fillAmount = currentHealth / maxHealth;
-        }
-    }
+    // public void UpdateHealthBar(UIElements uiElements)
+    // {
+    //     if (uiElements.healthValue != null)
+    //     {
+    //         uiElements.healthValue.fillAmount = currentHealth / maxHealth;
+    //     }
+    // }
 }

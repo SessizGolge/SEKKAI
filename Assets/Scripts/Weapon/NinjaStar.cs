@@ -18,7 +18,7 @@ public class NinjaStar : MonoBehaviour
 
     void Update()
     {
-        starDamageValue = playerController.weapons.starDamage;
+        // starDamageValue = playerController.weapons.starDamage;
         // Yıldız hareket ettikten sonra çarpışma kontrolünü sürekli yapmak için
         DetectColliders();
     }

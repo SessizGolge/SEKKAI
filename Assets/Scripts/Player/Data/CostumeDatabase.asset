@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49ff24d7b557d84f8ed38a350fd7802, type: 3}
+  m_Name: CostumeDatabase
+  m_EditorClassIdentifier: 
+  tops:
+  - {fileID: 557046707, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 214889588, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -1691202971, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 309204362, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 1295342867, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  torsos:
+  - {fileID: 1243766426, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 574689054, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -2100506158, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -1652042899, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -1765473267, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  bottoms:
+  - {fileID: -832657055, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 1751564383, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -1066237283, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: -603647674, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  - {fileID: 979012806, guid: c00a7a8393bdd4b438ae266aa76f031b, type: 3}
+  topWalkClips:
+  - {fileID: 7400000, guid: a932df7a6bfc19d42884c92a20f1a22e, type: 2}
+  - {fileID: 7400000, guid: 92c1793b4bc91e448a85bdc6906017d2, type: 2}
+  - {fileID: 7400000, guid: af63a56106cebb7408e7f10470d9619a, type: 2}
+  - {fileID: 7400000, guid: f81eb8e45b8a62844a70c0c98df7ade6, type: 2}
+  - {fileID: 7400000, guid: 2d72b26c88ea19d47865851bdddccc8a, type: 2}
+  torsoWalkClips:
+  - {fileID: 7400000, guid: f91dafee0453c484cb27e49aaab2e3d1, type: 2}
+  - {fileID: 7400000, guid: 0d52b26e5d24f874298c2836b1545fe7, type: 2}
+  - {fileID: 7400000, guid: 0d1f4d81be086ae439a4ab39138dd48d, type: 2}
+  - {fileID: 7400000, guid: 003786a5149d0234da8815c5c7f5679f, type: 2}
+  - {fileID: 7400000, guid: 9d83144950814ce4e98c752058b8f531, type: 2}
+  bottomWalkClips:
+  - {fileID: 7400000, guid: b90980f540f370f4b9976b683c2a33c5, type: 2}
+  - {fileID: 7400000, guid: d452b9eeaee8d5e4ebb7278647f97638, type: 2}
+  - {fileID: 7400000, guid: 1e11a4cb194e964449f29d2abf6c35a9, type: 2}
+  - {fileID: 7400000, guid: 6fde7a7780001004db4306f4ac9c79a3, type: 2}
+  - {fileID: 7400000, guid: 67483aa6274bb574098b935021451a03, type: 2}
+  topAttackClips:
+  - {fileID: 7400000, guid: 2f88c4d2c4274064b87095ef36486153, type: 2}
+  - {fileID: 7400000, guid: 3e7e56f8249ae944a8466fa402443f35, type: 2}
+  - {fileID: 7400000, guid: ec0a65c88b359144fb2e17ab3449b909, type: 2}
+  - {fileID: 7400000, guid: eec6b38e8b9afd94d9ed35ab0ba747c3, type: 2}
+  - {fileID: 7400000, guid: 3831c2baf83f544439e8556c0bd82fdc, type: 2}
+  torsoAttackClips:
+  - {fileID: 7400000, guid: 64ce0851f18e88343b00d192d393a3ed, type: 2}
+  - {fileID: 7400000, guid: 3437af7a147af0f44988b1fcd7cba0d8, type: 2}
+  - {fileID: 7400000, guid: ca91af2e30c4b12408d0f074db9fda25, type: 2}
+  - {fileID: 7400000, guid: f4c4d750a1a041941893335b96992bb4, type: 2}
+  - {fileID: 7400000, guid: 40dc7054c13a138478ceca7d5e54cf55, type: 2}
+  costumes:
+  - costumeName: Default
+    cost: 0
+  - costumeName: Akai
+    cost: 0
+  - costumeName: Shiro
+    cost: 100
+  - costumeName: Mizumi
+    cost: 500
+  - costumeName: Joseph J.
+    cost: 1000

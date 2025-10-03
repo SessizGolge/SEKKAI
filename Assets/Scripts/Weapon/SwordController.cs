@@ -30,7 +30,7 @@ public class SwordController : MonoBehaviour
     void Update()
     {
         bool isDead = healthComponent.IsDead;
-        attackDamageValue = player.weapons.attackDamage;
+        // attackDamageValue = player.weapons.attackDamage;
 
         if (!isDead)
         {

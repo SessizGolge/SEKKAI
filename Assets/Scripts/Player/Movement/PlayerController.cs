@@ -1,471 +1,235 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
-// ------------------------------
-// ---- Ayar Grupları -----------
-// ------------------------------
-
-[System.Serializable]
-public class MovementSettings
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PhotonView))]
+public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public float speed = 5f;
-    public float runSpeed = 7.5f;
-    public float dashSpeed = 10f;
-    // public float maxX = 6.5f;
-    // public float maxY = 5f;
-}
+    [Header("Movement")]
+    [SerializeField] float moveSpeed = 10f;
+    [SerializeField] float sprintMultiplier = 1.5f;
+    [SerializeField] float sprintAnimSpeed = 1.5f;
 
-[System.Serializable]
-public class StaminaSettings
-{
-    public float stamina = 5f;
-    public float maxStamina = 5f;
-    public float regenRate = 1f;
-    public float dashCost = 2f;
-    public float sprintCost = 1f;
-    public float sprintDuration = 0f; // Cooldown gibi
-}
+    [Header("Costume & Animator")]
+    [SerializeField] Animator playerAnimator;
+    [SerializeField] CostumeDatabase database;
+    [SerializeField] private SpriteRenderer topVFX;
+    [SerializeField] private SpriteRenderer torsoVFX;
+    [SerializeField] private SpriteRenderer bottomVFX;
 
-[System.Serializable]
-public class CursedEnergySettings 
-{
-    public float cursedEnergy = 0;
-    public float maxCursedEnergy = 100;
-}
+    Rigidbody2D rb;
+    Vector2 moveInput;
+    AnimatorOverrideController overrideController;
+    PhotonView view;
 
-[System.Serializable]
-public class WeaponObjects
-{
-    public GameObject sword;
-    public GameObject ninjaStar;
-    [SerializeField] public int starDamage = 25;
-    [SerializeField] public int attackDamage = 20;
-    public GameObject crosshair;
-}
+    int topIndex, torsoIndex, bottomIndex;
 
-[System.Serializable]
-public class UIElements
-{
-    public Sprite dashLeft;
-    public Sprite dashRight;
+    bool canAttack = true;
+    float attackCooldown = 0.4f;
 
-    public Image UIBar;
-    public Image staminaValue;
-    public Image healthValue;
-    public Image cursedEnergyBar;
-    public Image cursedEnergyValue;
-    public TMP_Text healthNumber, staminaNumber, cursedEnergyNumber, coinNumber, killStateValue, waveStateValue;
-}
+    Vector3 networkPosition;
+    Quaternion networkRotation;
+    float netMoveX, netMoveY;
+    bool netIsMoving;
 
-[System.Serializable]
-public class SFX 
-{
-    public AudioSource audioSource;
-    public AudioClip hitSFX, dashSFX;
-}
-
-public class PlayerController : MonoBehaviour
-{
-    // --------------------------
-    [Header("Player Settings")]
-    public MovementSettings movement;
-    public StaminaSettings staminaSettings;
-    public CursedEnergySettings cursedEnergySettings;
-    public WeaponObjects weapons;
-    public UIElements uiElements;
-    public SFX sfx;
-
-    // --------------------------
-    [Header("Player States")]
-    [SerializeField] Rigidbody2D rb;
-    [SerializeField] GameObject playerVFX;
-    [SerializeField] GameObject gameOverScreen;
-    
-    // [SerializeField] ObjectController objectController;
-    [SerializeField] Animator anim;
-    [SerializeField] Health healthComponent;
-    private Vector2 direction;
-    public bool isStarHolding = false;
-    public bool isSwordHolding = false;
-    public bool isCursed = false;
-    private bool facingRight = true;
-    private bool isDashing = false;
-    private bool isSprinting = false;
-    public string dieAnim = "AkaiDied";
-    public string cursedDieAnim = "AkaiCursedDied";
-    private Coroutine healthBarCoroutine, staminaBarCoroutine, cursedEnergyCoroutine;
-    [SerializeField] private float slowDuration = 0.5f;
-    [SerializeField] private float slowMultiplier = 0.5f;
-    private bool isSlowed = false;
-    private float originalSpeed;
-    public bool shouldMove = true;
-    
-    
-    void Start()
+    IEnumerator Start()
     {
-        gameOverScreen.SetActive(false);
+        playerAnimator.enabled = false;
         rb = GetComponent<Rigidbody2D>();
-        healthComponent = GetComponent<Health>();
-        
-        weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
-        weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
-        weapons.crosshair.SetActive(true);
+        view = GetComponent<PhotonView>();
 
-        UpdateStaminaBar();
-        UpdateHealthBar();
+        rb.gravityScale = 0;
+        rb.freezeRotation = true;
+
+        overrideController = new AnimatorOverrideController(playerAnimator.runtimeAnimatorController);
+        playerAnimator.runtimeAnimatorController = overrideController;
+
+        if (view.IsMine)
+        {
+            var props = PhotonNetwork.LocalPlayer.CustomProperties;
+            topIndex = props.ContainsKey("TopIndex") ? (int)props["TopIndex"] : 0;
+            torsoIndex = props.ContainsKey("TorsoIndex") ? (int)props["TorsoIndex"] : 0;
+            bottomIndex = props.ContainsKey("BottomIndex") ? (int)props["BottomIndex"] : 0;
+        }
+        else
+        {
+            var ownerProps = view.Owner.CustomProperties;
+            topIndex = ownerProps.ContainsKey("TopIndex") ? (int)ownerProps["TopIndex"] : 0;
+            torsoIndex = ownerProps.ContainsKey("TorsoIndex") ? (int)ownerProps["TorsoIndex"] : 0;
+            bottomIndex = ownerProps.ContainsKey("BottomIndex") ? (int)ownerProps["BottomIndex"] : 0;
+        }
+
+        gameObject.name = view.Owner.NickName;
+
+        ApplyCostumeAnimationsAndSprites();
+
+        networkPosition = transform.position;
+        networkRotation = transform.rotation;
+
+        yield return null;
     }
 
     void Update()
     {
-        bool isDead = healthComponent.IsDead;
-
-        if (!isDead && shouldMove) // && !objectController.isOpened
+        if (view.IsMine)
         {
-            if (isCursed) 
-            {
-                uiElements.cursedEnergyBar.gameObject.SetActive(true);
-                UpdateCursedEnergyBar();
-            }
-            else 
-            {
-                uiElements.cursedEnergyBar.gameObject.SetActive(false);
-            }
+            moveInput.x = Input.GetAxisRaw("Horizontal");
+            moveInput.y = Input.GetAxisRaw("Vertical");
+            moveInput.Normalize();
 
-            UpdateCoins();
-            UpdateStates();
-            UpdateHealthBar();
-            HandleMovementInput();
-            HandleWeaponSwitching();
-            HandleSprint();
-            HandleDash();
-            RegenerateStamina();
+            bool isMoving = moveInput != Vector2.zero;
+            bool isSprinting = isMoving && Input.GetKey(KeyCode.LeftShift);
+
+            playerAnimator.SetBool("Walking", isMoving);
+            playerAnimator.SetBool("Idle", !isMoving);
+            playerAnimator.speed = isSprinting ? sprintAnimSpeed : 1f;
+
+            if (moveInput.x > 0.01f)
+                transform.localScale = new Vector3(3, 3, 1);
+            else if (moveInput.x < -0.01f)
+                transform.localScale = new Vector3(-3, 3, 1);
+
+            if (Input.GetMouseButtonDown(0) && canAttack)
+                Attack();
+
+            // Kostüm değiştirme tuşları
+            if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeCostumeIndex(0);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeCostumeIndex(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeCostumeIndex(2);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) ChangeCostumeIndex(3);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) ChangeCostumeIndex(4);
         }
-        else if (isDead) {uiElements.UIBar.gameObject.SetActive(false);}
-    }
-
-    private void UpdateStates()
-    {
-        uiElements.killStateValue.text = PlayerPrefs.GetInt("KilledEnemies").ToString();
-        uiElements.waveStateValue.text = PlayerPrefs.GetInt("WavesCompleted").ToString();
-    }
-
-    public void TakeDamage(GameObject source, int damage)
-    {
-        healthComponent.GetHit(damage, source, gameObject);
-        sfx.audioSource.PlayOneShot(sfx.hitSFX);
-
-        if (!isSlowed)
+        else
         {
-            StartCoroutine(SlowDown());
-        }
+            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 10f);
 
-        // Ölüm gerçekleştiğinde animasyon tetiklenebilir
-        if (healthComponent.IsDead)
-        {
-            anim.SetTrigger("Die");
-        }
-    }
-
-    private IEnumerator SlowDown()
-    {
-        isSlowed = true;
-
-        originalSpeed = movement.speed; // veya hangi değişkenle karakteri hareket ettiriyorsan
-        movement.speed *= slowMultiplier;
-
-        yield return new WaitForSeconds(slowDuration);
-
-        movement.speed = originalSpeed;
-        isSlowed = false;
-    }
-
-
-    public void HandItemSwitch() 
-    {
-        if (isSwordHolding && !isStarHolding) 
-        {
-            weapons.sword.GetComponent<SpriteRenderer>().enabled = true;
-            isSwordHolding = true;
-            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = false;
-            isStarHolding = false;
-        }
-        if (isStarHolding && !isSwordHolding) 
-        {
-            weapons.sword.GetComponent<SpriteRenderer>().enabled = false;
-            isSwordHolding = false;
-            weapons.ninjaStar.GetComponent<SpriteRenderer>().enabled = true;
-            isStarHolding = true;
+            playerAnimator.SetBool("Walking", netIsMoving);
+            playerAnimator.SetBool("Idle", !netIsMoving);
+            playerAnimator.SetFloat("MoveX", netMoveX);
+            playerAnimator.SetFloat("MoveY", netMoveY);
         }
     }
 
     void FixedUpdate()
     {
-        bool isDead = healthComponent.IsDead;
-
-        if (!isDead && !isDashing) 
-        {
-            Vector2 newPosition = rb.position + direction * movement.speed * Time.fixedDeltaTime;
-            // newPosition.x = Mathf.Clamp(newPosition.x, -movement.maxX, movement.maxX);
-            // newPosition.y = Mathf.Clamp(newPosition.y, -movement.maxY, movement.maxY);
-            rb.MovePosition(newPosition);
-        }
+        if (!view.IsMine) return;
+        float currentSpeed = moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f);
+        rb.velocity = moveInput * currentSpeed;
     }
 
-    void HandleMovementInput()
+    private void ChangeCostumeIndex(int newIndex)
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
-        direction = new Vector2(moveHorizontal, moveVertical).normalized;
-        if (shouldMove) 
-        {
-            if (moveHorizontal > 0) facingRight = true;
-            else if (moveHorizontal < 0) facingRight = false;
-        }
-        
-        UpdateAnimations(moveHorizontal, moveVertical);
+        PlayerPrefs.SetInt("TopIndex", newIndex);
+        PlayerPrefs.SetInt("TorsoIndex", newIndex);
+        PlayerPrefs.SetInt("BottomIndex", newIndex);
+
+        ExitGames.Client.Photon.Hashtable costumeProps = new ExitGames.Client.Photon.Hashtable();
+        costumeProps["TopIndex"] = newIndex;
+        costumeProps["TorsoIndex"] = newIndex;
+        costumeProps["BottomIndex"] = newIndex;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(costumeProps);
     }
 
-    void HandleWeaponSwitching()
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        if (changedProps.ContainsKey("TopIndex") || changedProps.ContainsKey("TorsoIndex") || changedProps.ContainsKey("BottomIndex"))
         {
-            isSwordHolding = true;
-            isStarHolding = false;
-            HandItemSwitch();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) 
-        {
-            isSwordHolding = false;
-            isStarHolding = true;
-            HandItemSwitch();
-        }
-    }
-
-    void HandleSprint()
-    {
-        if (Input.GetKey(KeyCode.LeftShift) && staminaSettings.stamina > staminaSettings.sprintDuration && shouldMove)
-        {
-            isSprinting = true;
-            movement.speed = movement.runSpeed;
-            staminaSettings.stamina -= staminaSettings.sprintCost * Time.deltaTime;
-            staminaSettings.stamina = Mathf.Clamp(staminaSettings.stamina, 0f, staminaSettings.maxStamina);
-            anim.speed = 1.5f;
-
-            if (staminaSettings.stamina <= 0) 
+            if (targetPlayer == view.Owner)
             {
-                staminaSettings.sprintDuration = 2f;
+                int newTop = changedProps.ContainsKey("TopIndex") ? (int)changedProps["TopIndex"] : topIndex;
+                int newTorso = changedProps.ContainsKey("TorsoIndex") ? (int)changedProps["TorsoIndex"] : torsoIndex;
+                int newBottom = changedProps.ContainsKey("BottomIndex") ? (int)changedProps["BottomIndex"] : bottomIndex;
+
+                topIndex = newTop;
+                torsoIndex = newTorso;
+                bottomIndex = newBottom;
+
+                StartCoroutine(ApplyCostumeNextFrame(newTop, newTorso, newBottom));
             }
-            else 
-            {
-                staminaSettings.sprintDuration = 0f;
-            }
-            UpdateStaminaBar();
+        }
+    }
+
+    private IEnumerator ApplyCostumeNextFrame(int newTop, int newTorso, int newBottom)
+    {
+        yield return null;
+        var cm = GetComponent<PlayerCostumeManager>();
+        if(cm != null)
+            cm.SetCostume(newTop, newTorso, newBottom);
+    }
+
+    void ApplyCostumeAnimationsAndSprites()
+    {
+        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+
+        overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(database.topWalkClips[0], database.topWalkClips[topIndex]));
+        overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(database.torsoWalkClips[0], database.torsoWalkClips[torsoIndex]));
+        overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(database.bottomWalkClips[0], database.bottomWalkClips[bottomIndex]));
+
+        if (database.topAttackClips.Count > topIndex)
+            overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(database.topAttackClips[0], database.topAttackClips[topIndex]));
+        if (database.torsoAttackClips.Count > torsoIndex)
+            overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(database.torsoAttackClips[0], database.torsoAttackClips[torsoIndex]));
+
+        overrideController.ApplyOverrides(overrides);
+
+        StartCoroutine(ApplySpritesNextFrame());
+    }
+
+    IEnumerator ApplySpritesNextFrame()
+    {
+        topVFX.sprite = database.tops[topIndex];
+        torsoVFX.sprite = database.torsos[torsoIndex];
+        bottomVFX.sprite = database.bottoms[bottomIndex];
+        yield return null;
+        playerAnimator.enabled = true;
+    }
+
+    void Attack()
+    {
+        playerAnimator.SetTrigger("Attack");
+        view.RPC("RPC_PlayAttack", RpcTarget.Others);
+        StartCoroutine(AttackCooldownRoutine());
+    }
+
+    [PunRPC]
+    void RPC_PlayAttack()
+    {
+        playerAnimator.SetTrigger("Attack");
+    }
+
+    IEnumerator AttackCooldownRoutine()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting && view.IsMine)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(transform.localScale.x);
+
+            stream.SendNext(moveInput.x);
+            stream.SendNext(moveInput.y);
+            stream.SendNext(moveInput.sqrMagnitude > 0.1f);
         }
         else
         {
-            isSprinting = false;
-            movement.speed = 5f;
-            anim.speed = 1f;
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
+            float scaleX = (float)stream.ReceiveNext();
+            transform.localScale = new Vector3(scaleX, 3f, 1f);
+
+            netMoveX = (float)stream.ReceiveNext();
+            netMoveY = (float)stream.ReceiveNext();
+            netIsMoving = (bool)stream.ReceiveNext();
         }
-    }
-
-    void HandleDash()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && staminaSettings.stamina >= staminaSettings.dashCost && !isDashing && shouldMove)
-        {
-            StartCoroutine(Dash());
-        }
-    }
-
-    void RegenerateStamina()
-    {
-        if (!isSprinting && !isDashing)
-        {
-            staminaSettings.stamina += staminaSettings.regenRate * Time.deltaTime;
-            staminaSettings.stamina = Mathf.Clamp(staminaSettings.stamina, 0f, staminaSettings.maxStamina);
-            UpdateStaminaBar();
-        }
-    }
-
-    public void UpdateAnimations(float moveX, float moveY)
-    {
-        bool isDead = healthComponent.IsDead;
-        bool isWalking = moveX != 0 || moveY != 0;
-
-        if (isDead) 
-        {
-            anim.SetBool("AkaiWalk", false);
-            anim.SetBool("AkaiStand", false);
-        }
-
-        if (facingRight && !isDashing)
-        {
-            playerVFX.transform.rotation = Quaternion.Euler(0, 0, 0);
-            anim.SetBool("AkaiWalk", isWalking);
-            anim.SetBool("AkaiStand", !isWalking);
-        }
-        else if (!facingRight)
-        {
-            playerVFX.transform.rotation = Quaternion.Euler(0, -180, 0);
-            anim.SetBool("AkaiStand", !isWalking);
-            anim.SetBool("AkaiWalk", isWalking);
-        }
-    }
-
-    IEnumerator Dash()
-    {
-        isDashing = true;
-        staminaSettings.stamina -= staminaSettings.dashCost;
-        staminaSettings.stamina = Mathf.Clamp(staminaSettings.stamina, 0f, staminaSettings.maxStamina);
-        sfx.audioSource.PlayOneShot(sfx.dashSFX);
-        UpdateStaminaBar();
-
-        Vector2 dashDirection = direction == Vector2.zero ? (facingRight ? Vector2.right : Vector2.left) : direction;
-        rb.velocity = dashDirection * movement.dashSpeed;
-
-        SpriteRenderer spriteRenderer = playerVFX.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = facingRight ? uiElements.dashRight : uiElements.dashLeft;
-
-        yield return new WaitForSeconds(0.2f);
-        isDashing = false;
-        rb.velocity = Vector2.zero;
-    }
-
-    public IEnumerator HandleDeath()
-    {
-        anim.speed = 0.5f;
-
-        if (!isCursed)
-        {
-            anim.SetTrigger("AkaiDied");
-        }
-        else
-        {
-            anim.SetTrigger("AkaiCursedDied");
-        }
-        
-        weapons.crosshair.SetActive(false);
-        Cursor.visible = true;
-        gameOverScreen.SetActive(true);
-        yield return new WaitForSeconds(0.7f); // Ölme animasyonunun süresine göre ayarla
-        Destroy(gameObject);
-    }
-
-    IEnumerator SmoothHealthBar(float targetFill, float duration = 0.2f)
-    {
-        float startFill = uiElements.healthValue.fillAmount;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-            uiElements.healthValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
-            yield return null;
-        }
-
-        uiElements.healthValue.fillAmount = targetFill; // Son değeri sabitle
-    }
-
-    void UpdateHealthBar()
-    {
-        if (uiElements.healthValue != null)
-        {
-            float targetFill = (float)healthComponent.currentHealth / (float)healthComponent.maxHealth;
-
-            if (healthBarCoroutine != null)
-            {
-                StopCoroutine(healthBarCoroutine);
-            }
-
-            healthBarCoroutine = StartCoroutine(SmoothHealthBar(targetFill));
-        }
-
-        if (uiElements.healthNumber != null)
-        {
-            uiElements.healthNumber.text = healthComponent.currentHealth.ToString();
-        }
-    }
-
-
-    IEnumerator SmoothStaminaBar(float targetFill, float duration = 0.2f)
-    {
-        float startFill = uiElements.staminaValue.fillAmount;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-            uiElements.staminaValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
-            yield return null;
-        }
-
-        uiElements.staminaValue.fillAmount = targetFill; // Son değeri sabitle
-    }
-
-
-    void UpdateStaminaBar()
-    {
-        if (uiElements.staminaValue != null)
-        {
-            float targetFill = staminaSettings.stamina / staminaSettings.maxStamina;
-
-            if (staminaBarCoroutine != null)
-            {
-                StopCoroutine(staminaBarCoroutine);
-            }
-
-            staminaBarCoroutine = StartCoroutine(SmoothStaminaBar(targetFill));
-        }
-
-        if (uiElements.staminaNumber != null)
-        {
-            uiElements.staminaNumber.text = Mathf.RoundToInt(staminaSettings.stamina).ToString();
-        }
-    }
-
-    IEnumerator SmoothCursedEnergyBar(float targetFill, float duration = 0.2f)
-    {
-        float startFill = uiElements.cursedEnergyValue.fillAmount;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-            uiElements.cursedEnergyValue.fillAmount = Mathf.Lerp(startFill, targetFill, t);
-            yield return null;
-        }
-
-        uiElements.cursedEnergyValue.fillAmount = targetFill;
-    }
-
-    void UpdateCursedEnergyBar()
-    {
-        if (uiElements.cursedEnergyValue != null)
-        {
-            float targetFill = cursedEnergySettings.cursedEnergy / cursedEnergySettings.maxCursedEnergy;
-
-            if (cursedEnergyCoroutine != null)
-            {
-                StopCoroutine(cursedEnergyCoroutine);
-            }
-
-            cursedEnergyCoroutine = StartCoroutine(SmoothCursedEnergyBar(targetFill));
-        }
-
-        if (uiElements.cursedEnergyNumber != null)
-        {
-            uiElements.cursedEnergyNumber.text = cursedEnergySettings.cursedEnergy.ToString();
-        }
-    }
-    void UpdateCoins() 
-    {
-        uiElements.coinNumber.text = PlayerPrefs.GetInt("coin").ToString();
     }
 }

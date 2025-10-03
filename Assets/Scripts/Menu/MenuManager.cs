@@ -1,125 +1,151 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
+using Photon.Pun;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] GameObject mainMenu;
-    [SerializeField] GameObject optionsMenu;
-    [SerializeField] GameObject statsMenu;
-    [SerializeField] GameObject resetConfirmMenu;
-    [SerializeField] GameObject statsMenuMain;
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip bgMusic, selectSFX, chooseSFX, startGameSFX;
-    [SerializeField] TMP_Text PRWaveValue, PRKillValue, coinValue;
-    [SerializeField] int PRWave;
-    [SerializeField] int PRKill;
-    [SerializeField] int coin;
-    public float masterVol;
-    public float musicVol;
-    public float SFXVol;
+    [Header("Menus")]
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject optionsMenu;
+    [SerializeField] private GameObject customizeMenu;
+    [SerializeField] private GameObject serverMenu;
+    [SerializeField] private GameObject shopMenu;
+    [SerializeField] private GameObject player;
 
-    void Start()
+    [Header("UI")]
+    [SerializeField] private TMP_Text byMe;
+    [SerializeField] private TMP_Text killValue;
+    [SerializeField] private TMP_Text soulValue;
+    [SerializeField] private TMP_Text nicknameText;
+
+    [Header("Customization")]
+    [SerializeField] private Animator playerAnimMenu;
+    public SpriteRenderer topVFX;
+    public SpriteRenderer torsoVFX;
+    public SpriteRenderer bottomVFX;
+    [SerializeField] private CostumeDatabase costumeDatabase;
+
+    [HideInInspector] public int kills;
+    [HideInInspector] public int Souls;
+
+    private PlayerData playerData;
+
+    public PhotonView PhotonView;
+
+    #region Unity Callbacks
+    private IEnumerator Start()
     {
+        SoundManager.Instance.Play(SoundManager.Sound.MenuMusic, SoundManager.Instance.musicSource);
+
+        string author = Application.companyName;
+        string version = Application.version;
+        byMe.text = $"By {author}\nv{version}";
+
         Cursor.visible = true;
-        Screen.SetResolution(1600, 1200, true);
+
+        // Default menü
+        OpenMainMenu();
+
+        yield return null;
+
+        // PlayerData sahnede olmalı
+        if (PlayerData.Instance == null)
+        {
+            GameObject pdObj = new GameObject("PlayerData");
+            playerData = pdObj.AddComponent<PlayerData>();
+            playerData.SaveToPhoton(photonView);
+        }
+        else
+        {
+            playerData = PlayerData.Instance;
+        }
+
+        RefreshCostume();
+    }
+
+    private void Update()
+    {
+        if (playerData != null)
+        {
+            nicknameText.text = playerData.Nickname;
+        }
+        killValue.text = kills.ToString();
+        soulValue.text = Souls.ToString();
+
+        if (Input.GetKeyDown(KeyCode.F11))
+            Screen.fullScreen = !Screen.fullScreen;
+    }
+    #endregion
+
+    #region Menu Open/Close
+    public void OpenMainMenu()
+    {
         mainMenu.SetActive(true);
         optionsMenu.SetActive(false);
+        customizeMenu.SetActive(false);
+        serverMenu.SetActive(false);
+        shopMenu.SetActive(false);
 
-        PRWave = PlayerPrefs.GetInt("PR_WavesCompleted", 0);
-        PRKill = PlayerPrefs.GetInt("PR_KilledEnemies", 0);
-        masterVol = PlayerPrefs.GetFloat("SavedMasterVolume", 100);
-        musicVol = PlayerPrefs.GetFloat("SavedMusicVolume", 50);
-        SFXVol = PlayerPrefs.GetFloat("SavedSFXVolume", 50);
-        coin = PlayerPrefs.GetInt("coin", 0);
+        player.SetActive(true);
+        nicknameText.gameObject.SetActive(true);
     }
 
-    public void StartGame() 
+    public void OpenOptionsMenu()
     {
-        audioSource.PlayOneShot(startGameSFX);
-        StartCoroutine(StartGameSoundWait());
-    }
-
-    IEnumerator StartGameSoundWait() 
-    {
-        yield return new WaitForSeconds(0.7f);
-        SceneManager.LoadScene("GameScene");
-    }
-
-    IEnumerator ExitSoundWait() 
-    {
-        yield return new WaitForSeconds(0.7f);
-        Application.Quit();
-        Debug.Log("Oyun kapatılıyor...");
-    }
-
-    public void OpenOptionsMenu() 
-    {
-        audioSource.PlayOneShot(chooseSFX);
         mainMenu.SetActive(false);
         optionsMenu.SetActive(true);
     }
 
-    public void CloseOptionsMenu() 
+    public void OpenCustomizeMenu()
     {
-        audioSource.PlayOneShot(selectSFX);
-        mainMenu.SetActive(true);
-        optionsMenu.SetActive(false);
-    }
-
-    public void OpenStatsMenu() 
-    {
-        PRWaveValue.text = PRWave.ToString();
-        PRKillValue.text = PRKill.ToString();
-        coinValue.text = coin.ToString();
-        audioSource.PlayOneShot(chooseSFX);
-        statsMenu.SetActive(true);
-        statsMenuMain.SetActive(true);
         mainMenu.SetActive(false);
+        customizeMenu.SetActive(true);
     }
 
-    public void CloseStatsMenu() 
+    public void OpenServerMenu()
     {
-        audioSource.PlayOneShot(selectSFX);
-        mainMenu.SetActive(true);
-        statsMenuMain.SetActive(false);
-        statsMenu.SetActive(false);
-        resetConfirmMenu.SetActive(false);
-        statsMenuMain.SetActive(false);
+        mainMenu.SetActive(false);
+        serverMenu.SetActive(true);
     }
 
-    public void ExitGame() 
+    public void OpenShopMenu()
     {
-        audioSource.PlayOneShot(selectSFX);
-        StartCoroutine(ExitSoundWait());
+        mainMenu.SetActive(false);
+        shopMenu.SetActive(true);
     }
 
-    public void OpenConfirmResetUI() 
+    public void CloseCurrentMenu(GameObject menu)
     {
-        audioSource.PlayOneShot(chooseSFX);
-        resetConfirmMenu.SetActive(true);
-        statsMenuMain.SetActive(false);
+        menu.SetActive(false);
+        OpenMainMenu();
+    }
+    #endregion
+
+    #region PlayerData & Costumes
+    public PlayerData GetPlayerData() => playerData;
+
+    public void RefreshCostume()
+    {
+        if (playerData != null)
+        {
+            StartCoroutine(ApplyCostumeWithDelay(playerData.TopIndex, playerData.TorsoIndex, playerData.BottomIndex));
+        }
     }
 
-    public void CloseConfirmResetUI() 
+    private IEnumerator ApplyCostumeWithDelay(int topIndex, int torsoIndex, int bottomIndex)
     {
-        audioSource.PlayOneShot(selectSFX);
-        resetConfirmMenu.SetActive(false);
-        statsMenuMain.SetActive(true);
-    }
+        yield return null; // 1 frame
+        if (costumeDatabase.tops.Count > topIndex)
+            topVFX.sprite = costumeDatabase.tops[topIndex];
 
-    public void ResetStats() 
-    {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetFloat("SavedMasterVolume", masterVol);
-        PlayerPrefs.SetFloat("SavedMusicVolume", musicVol);
-        PlayerPrefs.SetFloat("SavedSFXVolume", SFXVol);
-        resetConfirmMenu.SetActive(false);
-        statsMenuMain.SetActive(false);
-        statsMenu.SetActive(false);
-        audioSource.PlayOneShot(chooseSFX);
-        Start();
+        yield return null; // 1 frame
+        if (costumeDatabase.torsos.Count > torsoIndex)
+            torsoVFX.sprite = costumeDatabase.torsos[torsoIndex];
+
+        yield return null; // 1 frame
+        if (costumeDatabase.bottoms.Count > bottomIndex)
+            bottomVFX.sprite = costumeDatabase.bottoms[bottomIndex];
     }
+    #endregion
 }

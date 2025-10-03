@@ -207,7 +207,7 @@ public class EnemyController : MonoBehaviour
         anim.speed = 0.5f;
         anim.SetTrigger("KagenariDied");
         yield return new WaitForSeconds(0.7f); // Ölme animasyonu süresi
-        GameManager.Instance.EnemyKilled();
+        // GameManager.Instance.EnemyKilled();
         HealPlayerRandomly();
         Destroy(gameObject); // Düşmanı yok et
     }
@@ -297,11 +297,11 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        var starDamage = closestPlayer.GetComponent<PlayerController>().weapons.starDamage;
-        if (collision.CompareTag("AkaiStar"))
-        {
-            TakeDamage(closestPlayer.gameObject, starDamage);
-        }
+        // var starDamage = closestPlayer.GetComponent<PlayerController>().weapons.starDamage;
+        // if (collision.CompareTag("AkaiStar"))
+        // {
+        //     TakeDamage(closestPlayer.gameObject, starDamage);
+        // }
     }
 
     // Ölüm event'ini dinleyen metot
